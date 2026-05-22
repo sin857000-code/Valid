@@ -1,12 +1,20 @@
 import TestProgressSection from "./components/TestProgressSection";
 import RoadmapSection from "./components/RoadmapSection";
 import VersionHistorySection from "./components/VersionHistorySection";
+import { testItems } from "@/data/status";
 
 const NAV_LINKS = [
   { href: "#test-progress", label: "테스트 진척도" },
   { href: "#roadmap", label: "로드맵" },
   { href: "#version-history", label: "버전 히스토리" },
 ];
+
+const doneCount = testItems.filter((i) => i.status === "완료").length;
+const inProgressCount = testItems.filter((i) => i.status === "진행중").length;
+const waitingCount = testItems.filter((i) => i.status === "대기").length;
+const overallProgress = Math.round(
+  testItems.reduce((sum, i) => sum + i.progress, 0) / testItems.length
+);
 
 export default function StatusPage() {
   return (
@@ -51,17 +59,21 @@ export default function StatusPage() {
         </div>
 
         {/* Summary cards */}
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-4 gap-3">
+          <div className="col-span-1 bg-gray-900 border border-gray-800 rounded-xl p-4 text-center">
+            <p className="text-2xl font-bold text-white">{overallProgress}%</p>
+            <p className="text-gray-500 text-sm mt-1">전체 진척도</p>
+          </div>
           <div className="bg-gray-900 border border-gray-800 rounded-xl p-4 text-center">
-            <p className="text-2xl font-bold text-emerald-400">2</p>
+            <p className="text-2xl font-bold text-emerald-400">{doneCount}</p>
             <p className="text-gray-500 text-sm mt-1">테스트 완료</p>
           </div>
           <div className="bg-gray-900 border border-gray-800 rounded-xl p-4 text-center">
-            <p className="text-2xl font-bold text-blue-400">6</p>
+            <p className="text-2xl font-bold text-blue-400">{inProgressCount}</p>
             <p className="text-gray-500 text-sm mt-1">진행중</p>
           </div>
           <div className="bg-gray-900 border border-gray-800 rounded-xl p-4 text-center">
-            <p className="text-2xl font-bold text-gray-400">2</p>
+            <p className="text-2xl font-bold text-gray-400">{waitingCount}</p>
             <p className="text-gray-500 text-sm mt-1">대기중</p>
           </div>
         </div>
