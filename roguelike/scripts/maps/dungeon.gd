@@ -73,6 +73,10 @@ func _ready() -> void:
 	var stat_choice = CanvasLayer.new()
 	stat_choice.set_script(load("res://scripts/ui/stat_choice.gd"))
 	add_child(stat_choice)
+	var achiev = Node.new()
+	achiev.set_script(load("res://scripts/core/achievement_manager.gd"))
+	achiev.name = "AchievementManager"
+	add_child(achiev)
 	_spawn_player()
 	transition.fade_out()
 	_generate_floor()
@@ -246,6 +250,9 @@ func _make_item(script: GDScript, pos: Vector2) -> void:
 	item.global_position = pos
 
 func _on_enemy_died(enemy: Node) -> void:
+	var achiev = get_node_or_null("AchievementManager")
+	if achiev:
+		achiev.check(player)
 	GameManager.add_score(enemy.exp_reward)
 	hud.update_score(GameManager.score)
 	if randf() < 0.18:
@@ -260,6 +267,9 @@ func _on_enemy_died(enemy: Node) -> void:
 			hud.update_score(GameManager.score)
 			hud.show_perfect_bonus(bonus)
 		hud.show_floor_clear(GameManager.current_floor)
+		var achiev = get_node_or_null("AchievementManager")
+		if achiev:
+			achiev.check(player)
 		GameManager.next_floor()
 		GameManager.save()
 		hud.update_floor(GameManager.current_floor)

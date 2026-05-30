@@ -26,6 +26,20 @@ func _ready() -> void:
 			$VBoxContainer.add_child(lbl)
 			$VBoxContainer.move_child(lbl, $VBoxContainer.get_child_count() - 3)
 
+	# Show unlocked achievements
+	if FileAccess.file_exists("user://achievements.json"):
+		var f = FileAccess.open("user://achievements.json", FileAccess.READ)
+		if f:
+			var data = JSON.parse_string(f.get_as_text())
+			if data is Dictionary:
+				var unlocked = data.keys().filter(func(k): return data[k])
+				if unlocked.size() > 0:
+					var al = Label.new()
+					al.text = "업적: " + str(unlocked.size()) + "개 달성"
+					al.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+					al.modulate = Color(1.0, 0.9, 0.3)
+					$VBoxContainer.add_child(al)
+
 	GameManager.delete_save()
 	retry_button.pressed.connect(_on_retry)
 	menu_button.pressed.connect(_on_menu)
