@@ -1,6 +1,7 @@
 import TestProgressSection from "./components/TestProgressSection";
 import RoadmapSection from "./components/RoadmapSection";
 import VersionHistorySection from "./components/VersionHistorySection";
+import PixelWorld from "./components/PixelWorld";
 
 const NAV_LINKS = [
   { href: "#test-progress", label: "테스트 진척도" },
@@ -64,6 +65,14 @@ export default function StatusPage() {
             <p className="text-2xl font-bold text-gray-400">2</p>
             <p className="text-gray-500 text-sm mt-1">대기중</p>
           </div>
+        </div>
+
+        {/* Pixel World */}
+        <div>
+          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-widest mb-3">
+            픽셀 세계
+          </h2>
+          <PixelWorld />
         </div>
 
         <TestProgressSection />
