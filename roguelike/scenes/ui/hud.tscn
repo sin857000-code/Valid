@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://hud"]
+[gd_scene load_steps=3 format=3 uid="uid://hud"]
 
 [ext_resource type="Script" path="res://scripts/ui/hud.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/ui/minimap.gd" id="2"]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1")
@@ -15,14 +16,21 @@ value = 100.0
 
 [node name="FloorLabel" type="Label" parent="."]
 offset_left = 10.0
-offset_top = 40.0
+offset_top = 38.0
 offset_right = 200.0
-offset_bottom = 60.0
+offset_bottom = 58.0
 text = "Floor: 1"
 
 [node name="ScoreLabel" type="Label" parent="."]
 offset_left = 10.0
-offset_top = 65.0
+offset_top = 62.0
 offset_right = 200.0
-offset_bottom = 85.0
+offset_bottom = 82.0
 text = "Score: 0"
+
+[node name="Minimap" type="Control" parent="."]
+script = ExtResource("2")
+offset_left = 1030.0
+offset_top = 10.0
+offset_right = 1270.0
+offset_bottom = 200.0

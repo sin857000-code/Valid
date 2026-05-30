@@ -2,54 +2,52 @@ extends CharacterBody2D
 
 signal enemy_died(enemy: Node)
 
-const SPEED = 60.0
-const CHASE_RANGE = 200.0
-const ATTACK_RANGE = 20.0
-const ATTACK_COOLDOWN = 1.0
-
 @export var max_health: int = 30
 @export var attack_damage: int = 5
+@export var move_speed: float = 60.0
+@export var chase_range: float = 200.0
+@export var attack_range: float = 18.0
+@export var attack_cooldown: float = 1.0
 @export var exp_reward: int = 10
+@export var body_color: Color = Color.RED
 
 var current_health: int
-var player: Node = null
-var attack_timer: float = 0.0
+var _player: Node = null
+var _attack_timer: float = 0.0
 
 func _ready() -> void:
 	current_health = max_health
-	player = get_tree().get_first_node_in_group("player")
+	add_to_group("enemy")
+	_player = get_tree().get_first_node_in_group("player")
+	# 색상 박스 스프라이트 생성
+	var rect = ColorRect.new()
+	rect.size = Vector2(12, 12)
+	rect.position = Vector2(-6, -6)
+	rect.color = body_color
+	add_child(rect)
 
 func _physics_process(delta: float) -> void:
-	if player == null:
+	if _player == null:
+		_player = get_tree().get_first_node_in_group("player")
 		return
 
-	attack_timer -= delta
-	var distance = global_position.distance_to(player.global_position)
+	_attack_timer -= delta
+	var dist = global_position.distance_to(_player.global_position)
 
-	if distance < ATTACK_RANGE:
-		_try_attack()
-	elif distance < CHASE_RANGE:
-		_chase_player()
-	else:
+	if dist < attack_range:
 		velocity = Vector2.ZERO
+		if _attack_timer <= 0.0:
+			_attack_timer = attack_cooldown
+			_player.take_damage(attack_damage)
+	elif dist < chase_range:
+		velocity = (_player.global_position - global_position).normalized() * move_speed
+	else:
+		velocity = velocity.move_toward(Vector2.ZERO, move_speed)
 
 	move_and_slide()
 
-func _chase_player() -> void:
-	var dir = (player.global_position - global_position).normalized()
-	velocity = dir * SPEED
-
-func _try_attack() -> void:
-	if attack_timer <= 0.0:
-		attack_timer = ATTACK_COOLDOWN
-		player.take_damage(attack_damage)
-
 func take_damage(amount: int) -> void:
 	current_health -= amount
-	current_health = max(current_health, 0)
-	if current_health == 0:
-		_die()
-
-func _die() -> void:
-	enemy_died.emit(self)
-	queue_free()
+	if current_health <= 0:
+		enemy_died.emit(self)
+		queue_free()
