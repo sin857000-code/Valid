@@ -125,11 +125,12 @@ func _do_attack() -> void:
 		in_range = in_range or body.global_position.distance_to(attack_pos) < attack_range
 		if in_range:
 			var is_crit = randf() < 0.12
-			var dmg = attack_damage * (3 if is_crit else 1)
+			var rage_mult = get_meta("rage_dmg_mult") if has_meta("rage_dmg_mult") else 1.0
+			var dmg = int(attack_damage * (3 if is_crit else 1) * rage_mult)
 			_combo += 1
 			_combo_timer = 2.5
 			var combo_mult = 1.0 + (_combo / 10.0)
-			dmg = int(dmg * combo_mult)
+			dmg = int(float(dmg) * combo_mult)
 			body.take_damage(dmg, global_position)
 			hit_any = true
 			if is_crit:
@@ -145,6 +146,14 @@ func _physics_process_invincible(delta: float) -> void:
 			remove_meta("invincible_timer")
 		else:
 			set_meta("invincible_timer", t)
+	if has_meta("rage_timer"):
+		var rt = get_meta("rage_timer") - delta
+		if rt <= 0.0:
+			remove_meta("rage_timer")
+			if has_meta("rage_dmg_mult"):
+				remove_meta("rage_dmg_mult")
+		else:
+			set_meta("rage_timer", rt)
 
 func take_damage(amount: int) -> void:
 	if _is_dashing:
