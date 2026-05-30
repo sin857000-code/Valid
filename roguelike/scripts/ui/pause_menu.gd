@@ -30,6 +30,12 @@ func _ready() -> void:
 	title.add_theme_font_size_override("font_size", 20)
 	vbox.add_child(title)
 
+	var stats = Label.new()
+	stats.name = "StatsLabel"
+	stats.add_theme_font_size_override("font_size", 11)
+	stats.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vbox.add_child(stats)
+
 	var resume_btn = Button.new()
 	resume_btn.text = "Resume"
 	resume_btn.pressed.connect(_toggle_pause)
@@ -51,6 +57,12 @@ func _input(event: InputEvent) -> void:
 func _toggle_pause() -> void:
 	_visible = not _visible
 	get_tree().paused = _visible
+	if _visible:
+		var stats = _panel.get_node_or_null("VBoxContainer/StatsLabel")
+		if stats:
+			stats.text = "Floor: %d  Score: %d\nKills: %d  Lv: %d" % [
+				GameManager.current_floor, GameManager.score,
+				GameManager.kills, GameManager.level]
 	_set_visible(_visible)
 
 func _set_visible(v: bool) -> void:

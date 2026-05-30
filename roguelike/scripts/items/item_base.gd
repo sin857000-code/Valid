@@ -44,5 +44,12 @@ func _on_body_entered(body: Node) -> void:
 		_apply_effect(body)
 		queue_free()
 
+func _process(_delta: float) -> void:
+	var player = get_tree().get_first_node_in_group("player")
+	if player and player.has_meta("magnet_range"):
+		var dist = global_position.distance_to(player.global_position)
+		if dist < player.get_meta("magnet_range"):
+			global_position = global_position.move_toward(player.global_position, 200.0 * _delta)
+
 func _apply_effect(_player: Node) -> void:
 	pass

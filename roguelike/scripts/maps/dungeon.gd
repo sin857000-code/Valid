@@ -13,6 +13,7 @@ const ENEMY_SCRIPTS = [
 	"res://scripts/enemies/enemy_teleporter.gd",
 	"res://scripts/enemies/enemy_mirror.gd",
 	"res://scripts/enemies/enemy_healer.gd",
+	"res://scripts/enemies/enemy_giant.gd",
 ]
 const ITEM_SCRIPTS = [
 	"res://scripts/items/item_health_potion.gd",
@@ -28,6 +29,7 @@ const ITEM_SCRIPTS = [
 	"res://scripts/items/item_berserker.gd",
 	"res://scripts/items/item_iron_boots.gd",
 	"res://scripts/items/item_double_exp.gd",
+	"res://scripts/items/item_magnet.gd",
 ]
 const WEAPON_SCRIPTS = [
 	"res://scripts/items/weapon_dagger.gd",
