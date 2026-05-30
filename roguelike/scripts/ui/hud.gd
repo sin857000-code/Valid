@@ -1,10 +1,10 @@
 extends CanvasLayer
 
-@onready var health_bar: ProgressBar = $HealthBar
-@onready var exp_bar: ProgressBar = $ExpBar
-@onready var floor_label: Label = $FloorLabel
-@onready var score_label: Label = $ScoreLabel
-@onready var level_label: Label = $LevelLabel
+@onready var health_bar: ProgressBar = $Panel/VBox/HealthBar
+@onready var exp_bar: ProgressBar = $Panel/VBox/ExpBar
+@onready var floor_label: Label = $Panel/VBox/FloorLabel
+@onready var score_label: Label = $Panel/VBox/ScoreLabel
+@onready var level_label: Label = $Panel/VBox/LevelLabel
 @onready var boss_alert: Label = $BossAlert
 @onready var weapon_label: Label = $WeaponLabel
 @onready var minimap: Control = $Minimap
@@ -17,12 +17,15 @@ func _ready() -> void:
 func update_health(current: int, maximum: int) -> void:
 	health_bar.max_value = maximum
 	health_bar.value = current
+	# 색상: 초록 → 노랑 → 빨강
+	var ratio = float(current) / float(maximum)
+	health_bar.modulate = Color(1.0, ratio, ratio * 0.3)
 
 func update_floor(floor_num: int) -> void:
-	floor_label.text = "Floor: %d" % floor_num
+	floor_label.text = "Floor  %d" % floor_num
 
 func update_score(s: int) -> void:
-	score_label.text = "Score: %d" % s
+	score_label.text = "Score  %d" % s
 	_refresh_exp()
 
 func _on_level_up(new_level: int) -> void:
@@ -37,14 +40,18 @@ func _refresh_exp() -> void:
 
 func show_boss_alert() -> void:
 	boss_alert.visible = true
-	floor_label.text = "Floor: %d  !! BOSS" % GameManager.current_floor
+	floor_label.text = "Floor  %d  !! BOSS" % GameManager.current_floor
 	var tween = create_tween()
-	tween.tween_interval(3.0)
+	tween.tween_property(boss_alert, "modulate:a", 1.0, 0.3)
+	tween.tween_interval(2.5)
+	tween.tween_property(boss_alert, "modulate:a", 0.0, 0.5)
 	tween.tween_callback(func(): boss_alert.visible = false)
 
 func show_weapon_pickup(weapon_name: String) -> void:
 	weapon_label.text = "장착: %s" % weapon_name
+	weapon_label.modulate.a = 1.0
 	weapon_label.visible = true
 	var tween = create_tween()
-	tween.tween_interval(2.0)
+	tween.tween_interval(1.5)
+	tween.tween_property(weapon_label, "modulate:a", 0.0, 0.5)
 	tween.tween_callback(func(): weapon_label.visible = false)
