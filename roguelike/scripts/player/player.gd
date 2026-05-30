@@ -74,6 +74,7 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		return
 
+	_physics_process_invincible(delta)
 	status.tick(delta, self)
 	var direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	velocity = direction * SPEED * status.get_speed_factor() * move_speed_bonus
@@ -135,8 +136,18 @@ func _do_attack() -> void:
 	if not hit_any:
 		_combo = 0
 
+func _physics_process_invincible(delta: float) -> void:
+	if has_meta("invincible_timer"):
+		var t = get_meta("invincible_timer") - delta
+		if t <= 0.0:
+			remove_meta("invincible_timer")
+		else:
+			set_meta("invincible_timer", t)
+
 func take_damage(amount: int) -> void:
 	if _is_dashing:
+		return
+	if has_meta("invincible_timer") and get_meta("invincible_timer") > 0.0:
 		return
 	# 보호막 1회 차단
 	if has_meta("shield") and get_meta("shield"):

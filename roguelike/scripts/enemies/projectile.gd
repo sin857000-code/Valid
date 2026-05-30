@@ -10,19 +10,30 @@ func setup(direction: Vector2, damage: int, speed: float) -> void:
 	_velocity = direction.normalized() * speed
 
 	_dot = ColorRect.new()
-	_dot.size = Vector2(6, 6)
-	_dot.position = Vector2(-3, -3)
-	_dot.color = Color(0.3, 1.0, 0.5)
+	_dot.size = Vector2(8, 8)
+	_dot.position = Vector2(-4, -4)
+	_dot.color = Color(0.2, 1.0, 0.4)
 	add_child(_dot)
 
-	# 꼬리 잔상
+	# Glowing core
+	var glow = ColorRect.new()
+	glow.size = Vector2(4, 4)
+	glow.position = Vector2(-2, -2)
+	glow.color = Color(0.8, 1.0, 0.8, 0.9)
+	add_child(glow)
+
+	# Tail
 	var tail = ColorRect.new()
-	tail.size = Vector2(10, 3)
-	tail.position = Vector2(-10, -1)
-	tail.color = Color(0.3, 1.0, 0.5, 0.4)
+	tail.size = Vector2(14, 3)
+	tail.position = Vector2(-14, -1)
+	tail.color = Color(0.2, 0.9, 0.4, 0.3)
 	add_child(tail)
 
 	rotation = direction.angle()
+	# Pulse the projectile
+	var pulse = create_tween().set_loops()
+	pulse.tween_property(_dot, "modulate:a", 0.6, 0.15)
+	pulse.tween_property(_dot, "modulate:a", 1.0, 0.15)
 
 func _process(delta: float) -> void:
 	position += _velocity * delta

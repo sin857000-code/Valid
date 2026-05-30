@@ -84,7 +84,14 @@ func update_health(current: int, maximum: int) -> void:
 	health_bar.modulate = Color(1.0, ratio * 0.85, ratio * 0.2)
 
 func update_floor(floor_num: int) -> void:
-	floor_label.text = "Floor  %d" % floor_num
+	var theme_name = "Cave"
+	if floor_num >= 16:
+		theme_name = "Hell"
+	elif floor_num >= 11:
+		theme_name = "Crypt"
+	elif floor_num >= 6:
+		theme_name = "Dungeon"
+	floor_label.text = "F%d  %s" % [floor_num, theme_name]
 
 func update_score(s: int) -> void:
 	score_label.text = "Score  %d" % s
