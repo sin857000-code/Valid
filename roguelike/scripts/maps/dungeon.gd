@@ -5,10 +5,12 @@ const ENEMY_SCRIPTS = [
 	"res://scripts/enemies/enemy_fast.gd",
 	"res://scripts/enemies/enemy_tank.gd",
 	"res://scripts/enemies/enemy_ranged.gd",
+	"res://scripts/enemies/enemy_exploder.gd",
 ]
 const ITEM_SCRIPTS = [
 	"res://scripts/items/item_health_potion.gd",
 	"res://scripts/items/item_attack_up.gd",
+	"res://scripts/items/item_shield.gd",
 ]
 const WEAPON_SCRIPTS = [
 	"res://scripts/items/weapon_dagger.gd",

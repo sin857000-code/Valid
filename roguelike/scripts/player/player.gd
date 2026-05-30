@@ -91,7 +91,13 @@ func _do_attack() -> void:
 			body.take_damage(attack_damage)
 
 func take_damage(amount: int) -> void:
-	if _is_dashing:  # 대시 중 무적
+	if _is_dashing:
+		return
+	# 보호막 1회 차단
+	if has_meta("shield") and get_meta("shield"):
+		set_meta("shield", false)
+		if has_meta("shield_visual"):
+			get_meta("shield_visual").queue_free()
 		return
 	current_health -= amount
 	current_health = max(current_health, 0)
