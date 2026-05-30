@@ -9,6 +9,8 @@ var score: int = 0
 var exp: int = 0
 var level: int = 1
 var kills: int = 0
+var floor_time: float = 0.0
+var best_floor_time: float = 9999.0
 
 func exp_to_next() -> int:
 	return level * 50
@@ -21,6 +23,9 @@ func add_exp(amount: int) -> void:
 		level_up.emit(level)
 
 func next_floor() -> void:
+	if floor_time < best_floor_time:
+		best_floor_time = floor_time
+	floor_time = 0.0
 	current_floor += 1
 	floor_cleared.emit()
 
@@ -61,9 +66,14 @@ func delete_save() -> void:
 	if FileAccess.file_exists("user://save.json"):
 		DirAccess.remove_absolute("user://save.json")
 
+func _process(delta: float) -> void:
+	floor_time += delta
+
 func reset() -> void:
 	current_floor = 1
 	score = 0
 	exp = 0
 	level = 1
 	kills = 0
+	floor_time = 0.0
+	best_floor_time = 9999.0

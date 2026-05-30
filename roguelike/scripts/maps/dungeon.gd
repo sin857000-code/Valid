@@ -20,6 +20,7 @@ const ITEM_SCRIPTS = [
 	"res://scripts/items/item_rage.gd",
 	"res://scripts/items/item_regen.gd",
 	"res://scripts/items/item_lifesteal.gd",
+	"res://scripts/items/item_teleport.gd",
 ]
 const WEAPON_SCRIPTS = [
 	"res://scripts/items/weapon_dagger.gd",

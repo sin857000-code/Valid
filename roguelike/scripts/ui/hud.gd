@@ -132,7 +132,7 @@ func update_floor(floor_num: int) -> void:
 	floor_label.text = "F%d  %s%s" % [floor_num, theme_name, suffix]
 
 func update_score(s: int) -> void:
-	score_label.text = "Score  %d" % s
+	score_label.text = "Score  %d  (%.1fs)" % [s, GameManager.floor_time]
 	_refresh_exp()
 
 func _on_level_up(new_level: int) -> void:
