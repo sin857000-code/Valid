@@ -6,25 +6,32 @@ const MAP_OFFSET = Vector2(10, 10)
 
 var _rooms: Array[Rect2i] = []
 var _player: Node = null
+var _boss_room: Rect2i = Rect2i()
 
 func _ready() -> void:
 	_player = get_tree().get_first_node_in_group("player")
 
-func setup(rooms: Array[Rect2i]) -> void:
+func setup(rooms: Array[Rect2i], boss_room: Rect2i = Rect2i()) -> void:
 	_rooms = rooms
+	_boss_room = boss_room
 	queue_redraw()
 
 func _process(_delta: float) -> void:
 	queue_redraw()
 
 func _draw() -> void:
-	# 방 그리기
-	for room in _rooms:
+	for i in range(_rooms.size()):
+		var room = _rooms[i]
 		var rect = Rect2(
 			MAP_OFFSET + Vector2(room.position) * TILE_SIZE,
 			Vector2(room.size) * TILE_SIZE
 		)
-		draw_rect(rect, Color(0.4, 0.4, 0.4, 0.8))
+		var fill = Color(0.4, 0.4, 0.4, 0.8)
+		if i == 0:
+			fill = Color(0.2, 0.8, 0.3, 0.8)  # start room green
+		elif room == _boss_room:
+			fill = Color(0.7, 0.1, 0.7, 0.9)  # boss room purple
+		draw_rect(rect, fill)
 		draw_rect(rect, Color.WHITE, false)
 
 	# 적 위치

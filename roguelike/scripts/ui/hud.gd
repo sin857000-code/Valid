@@ -116,6 +116,23 @@ func show_boss_alert() -> void:
 	tween.tween_property(boss_alert, "modulate:a", 0.0, 0.5)
 	tween.tween_callback(func(): boss_alert.visible = false)
 
+func show_theme_enter(theme_name: String, color: Color) -> void:
+	var lbl = Label.new()
+	lbl.text = "~ %s ~" % theme_name.to_upper()
+	lbl.add_theme_font_size_override("font_size", 28)
+	lbl.modulate = color
+	lbl.modulate.a = 0.0
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lbl.set_anchors_preset(Control.PRESET_CENTER)
+	lbl.position += Vector2(-200, -60)
+	lbl.size = Vector2(400, 60)
+	add_child(lbl)
+	var tween = lbl.create_tween()
+	tween.tween_property(lbl, "modulate:a", 1.0, 0.5)
+	tween.tween_interval(2.0)
+	tween.tween_property(lbl, "modulate:a", 0.0, 0.6)
+	tween.tween_callback(lbl.queue_free)
+
 func show_perfect_bonus(bonus: int) -> void:
 	var lbl = Label.new()
 	lbl.text = "PERFECT! +%d" % bonus

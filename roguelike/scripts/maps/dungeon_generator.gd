@@ -9,10 +9,12 @@ const MIN_ROOM_SIZE = 5
 const MAX_ROOM_SIZE = 13
 
 var rooms: Array[Rect2i] = []
+var secret_room: Rect2i = Rect2i()
 var _grid: Array = []
 
 func generate() -> Array:
 	rooms.clear()
+	secret_room = Rect2i()
 	_grid = []
 	for y in range(MAP_HEIGHT):
 		_grid.append([])
@@ -21,7 +23,32 @@ func generate() -> Array:
 
 	_bsp_split(Rect2i(1, 1, MAP_WIDTH - 2, MAP_HEIGHT - 2), 5)
 	_connect_rooms()
+	_carve_secret_room()
 	return _grid
+
+func _carve_secret_room() -> void:
+	if rooms.is_empty():
+		return
+	var anchor = rooms[randi_range(1, rooms.size() - 2)]
+	var center = anchor.get_center()
+	var offsets = [Vector2i(MAX_ROOM_SIZE + 2, 0), Vector2i(-MAX_ROOM_SIZE - 8, 0),
+				   Vector2i(0, MAX_ROOM_SIZE + 2), Vector2i(0, -MAX_ROOM_SIZE - 8)]
+	offsets.shuffle()
+	for off in offsets:
+		var sx = center.x + off.x
+		var sy = center.y + off.y
+		var sw = randi_range(4, 7)
+		var sh = randi_range(4, 7)
+		if sx < 2 or sy < 2 or sx + sw >= MAP_WIDTH - 2 or sy + sh >= MAP_HEIGHT - 2:
+			continue
+		var room = Rect2i(sx, sy, sw, sh)
+		for rx in range(room.position.x, room.position.x + room.size.x):
+			for ry in range(room.position.y, room.position.y + room.size.y):
+				_grid[ry][rx] = TILE_FLOOR
+		# narrow 1-tile connector
+		_carve_corridor(center, room.get_center())
+		secret_room = room
+		return
 
 func _bsp_split(area: Rect2i, depth: int) -> void:
 	if depth == 0 or area.size.x < MIN_ROOM_SIZE * 2 or area.size.y < MIN_ROOM_SIZE * 2:

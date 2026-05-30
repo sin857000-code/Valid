@@ -72,11 +72,18 @@ func _generate_floor() -> void:
 	map_renderer.setup(grid, generator.get_map_width(), generator.get_map_height())
 	fog.setup(generator.get_map_width(), generator.get_map_height())
 
-	player.global_position = Vector2(rooms[0].get_center()) * TILE
-	hud.minimap.setup(rooms)
-
 	is_boss_floor = GameManager.current_floor % BOSS_INTERVAL == 0
+	player.global_position = Vector2(rooms[0].get_center()) * TILE
+	hud.minimap.setup(rooms, generator.get_boss_room() if is_boss_floor else Rect2i())
 	enemy_count = 0
+
+	var f = GameManager.current_floor
+	if f == 6:
+		hud.show_theme_enter("Dungeon", Color(0.3, 0.9, 0.4))
+	elif f == 11:
+		hud.show_theme_enter("Crypt", Color(0.4, 0.6, 1.0))
+	elif f == 16:
+		hud.show_theme_enter("Hell", Color(1.0, 0.3, 0.1))
 
 	if is_boss_floor:
 		_spawn_boss()
@@ -87,6 +94,7 @@ func _generate_floor() -> void:
 
 	_spawn_items()
 	_spawn_traps()
+	_spawn_secret_loot()
 	transition.fade_out()
 
 func _spawn_enemy() -> void:
@@ -123,6 +131,17 @@ func _spawn_items() -> void:
 		var room = rooms[randi_range(1, rooms.size() - 1)]
 		_make_item(load(WEAPON_SCRIPTS[randi() % WEAPON_SCRIPTS.size()]),
 			Vector2(room.get_center()) * TILE)
+
+func _spawn_secret_loot() -> void:
+	var sr = generator.secret_room
+	if sr == Rect2i():
+		return
+	var center = Vector2(sr.get_center()) * TILE
+	for i in range(2):
+		_make_item(load(ITEM_SCRIPTS[randi() % ITEM_SCRIPTS.size()]),
+			center + Vector2(randi_range(-12, 12), randi_range(-12, 12)))
+	if randi() % 3 == 0:
+		_make_item(load(WEAPON_SCRIPTS[randi() % WEAPON_SCRIPTS.size()]), center)
 
 func _spawn_traps() -> void:
 	var trap_count = 2 + GameManager.current_floor / 2
