@@ -20,7 +20,7 @@ const BASE_ENEMIES = 5
 # 3층마다 보스 등장
 const BOSS_INTERVAL = 3
 
-@onready var tilemap: TileMapLayer = $TileMapLayer
+@onready var tilemap = $TileMapLayer
 @onready var player: CharacterBody2D = $Player
 @onready var hud: CanvasLayer = $HUD
 @onready var generator: Node = $DungeonGenerator

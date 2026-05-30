@@ -10,10 +10,10 @@ const MAP_HEIGHT = 40
 const MIN_ROOM_SIZE = 5
 const MAX_ROOM_SIZE = 12
 
-var tile_map: TileMapLayer
+var tile_map
 var rooms: Array[Rect2i] = []
 
-func generate(tilemap: TileMapLayer) -> Array[Rect2i]:
+func generate(tilemap) -> Array[Rect2i]:
 	tile_map = tilemap
 	rooms.clear()
 	_fill_walls()
