@@ -22,7 +22,7 @@ SCENE_COUNT=$(find "$PROJ/scenes" -name "*.tscn" | wc -l)
 TODO_COUNT=$(grep -r "TODO\|FIXME\|HACK" "$PROJ/scripts" 2>/dev/null | wc -l || true)
 
 # ---- 3. 기능 체크리스트 ----
-HAS_FOG=$(grep -l "fog_of_war" "$PROJ/scripts/maps/dungeon.gd" 2>/dev/null | wc -l)
+HAS_FOG=$([ -f "$PROJ/scripts/maps/fog_of_war.gd" ] && echo 1 || echo 0)
 HAS_BOSS=$([ -f "$PROJ/scripts/enemies/enemy_boss.gd" ] && echo 1 || echo 0)
 HAS_RANGED=$([ -f "$PROJ/scripts/enemies/enemy_ranged.gd" ] && echo 1 || echo 0)
 HAS_DASH=$(grep -c "_is_dashing" "$PROJ/scripts/player/player.gd" 2>/dev/null || true)
