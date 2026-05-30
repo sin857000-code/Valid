@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-05-30T12:39:23+00:00",
+  "timestamp": "2026-05-30T14:45:46+00:00",
   "build": {
     "success": 1,
     "script_errors": 0
   },
   "metrics": {
-    "total_lines": 1173,
-    "script_count": 29,
+    "total_lines": 2538,
+    "script_count": 49,
     "scene_count": 6,
     "todo_count": 0,
-    "enemy_types": 6,
-    "weapon_count": 4,
-    "item_count": 3
+    "enemy_types": 11,
+    "weapon_count": 5,
+    "item_count": 10
   },
   "features": {
-    "fog_of_war": 0,
+    "fog_of_war": 1,
     "boss": 1,
     "ranged_enemy": 1,
     "dash": 1,
@@ -23,6 +23,6 @@
     "particles": 1,
     "floor_transition": 1
   },
-  "missing": ["fog_of_war","sound_effects","high_score","exploder_enemy","shield_item","status_effects"],
-  "score": 193
+  "missing": [""],
+  "score": 283
 }
