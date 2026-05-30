@@ -32,9 +32,13 @@ func next_floor() -> void:
 func add_score(amount: int) -> void:
 	var player = get_tree().get_first_node_in_group("player") if get_tree() else null
 	var mult = 1.0
-	if player and player.has_meta("exp_mult"):
-		mult = player.get_meta("exp_mult")
-	score += amount
+	var bonus = 0
+	if player:
+		if player.has_meta("exp_mult"):
+			mult = player.get_meta("exp_mult")
+		if player.has_meta("kill_score_bonus"):
+			bonus = player.get_meta("kill_score_bonus")
+	score += amount + bonus
 	kills += 1
 	add_exp(int(amount * mult))
 
