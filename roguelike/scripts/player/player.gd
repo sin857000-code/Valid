@@ -285,6 +285,11 @@ func take_damage(amount: int) -> void:
 		set_meta("shield", false)
 		if has_meta("shield_visual"):
 			get_meta("shield_visual").queue_free()
+		if has_meta("mirror_shield") and get_meta("mirror_shield"):
+			for body in get_tree().get_nodes_in_group("enemy"):
+				if global_position.distance_to(body.global_position) < 60.0:
+					body.take_damage(amount, global_position)
+					break
 		return
 	damage_free_time = 0.0
 	if has_meta("thorns_dmg"):

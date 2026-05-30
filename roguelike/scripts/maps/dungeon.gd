@@ -32,6 +32,9 @@ const ENEMY_SCRIPTS = [
 	"res://scripts/enemies/enemy_necromancer.gd",
 	"res://scripts/enemies/enemy_lava_elemental.gd",
 	"res://scripts/enemies/enemy_ice_golem.gd",
+	"res://scripts/enemies/enemy_dragon.gd",
+	"res://scripts/enemies/enemy_titan.gd",
+	"res://scripts/enemies/enemy_shadow.gd",
 ]
 const ITEM_SCRIPTS = [
 	"res://scripts/items/item_health_potion.gd",
@@ -61,6 +64,7 @@ const ITEM_SCRIPTS = [
 	"res://scripts/items/item_barrier.gd",
 	"res://scripts/items/item_gold_rush.gd",
 	"res://scripts/items/item_clone.gd",
+	"res://scripts/items/item_mirror_shield.gd",
 ]
 const WEAPON_SCRIPTS = [
 	"res://scripts/items/weapon_dagger.gd",
@@ -81,6 +85,7 @@ const WEAPON_SCRIPTS = [
 	"res://scripts/items/weapon_flail.gd",
 	"res://scripts/items/weapon_holy_sword.gd",
 	"res://scripts/items/weapon_dark_blade.gd",
+	"res://scripts/items/weapon_soul_staff.gd",
 ]
 const TILE = 16
 const BASE_ENEMIES = 5
