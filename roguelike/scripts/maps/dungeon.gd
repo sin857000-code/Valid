@@ -165,6 +165,18 @@ const ENEMY_SCRIPTS = [
 	"res://scripts/enemies/enemy_crystal_knight.gd",
 	"res://scripts/enemies/enemy_chaos_beast.gd",
 	"res://scripts/enemies/enemy_death_lord.gd",
+	"res://scripts/enemies/enemy_revenant2.gd",
+	"res://scripts/enemies/enemy_plague_knight.gd",
+	"res://scripts/enemies/enemy_frost_lich.gd",
+	"res://scripts/enemies/enemy_flame_knight.gd",
+	"res://scripts/enemies/enemy_shadow_archer.gd",
+	"res://scripts/enemies/enemy_bone_mage.gd",
+	"res://scripts/enemies/enemy_thunder_drake.gd",
+	"res://scripts/enemies/enemy_void_reaper.gd",
+	"res://scripts/enemies/enemy_crystal_mage.gd",
+	"res://scripts/enemies/enemy_inferno_beast.gd",
+	"res://scripts/enemies/enemy_arcane_beast.gd",
+	"res://scripts/enemies/enemy_plague_wraith.gd",
 ]
 const ITEM_SCRIPTS = [
 	"res://scripts/items/item_health_potion.gd",
