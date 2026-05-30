@@ -2,6 +2,7 @@ extends CanvasLayer
 
 @onready var health_bar: ProgressBar = $Panel/VBox/HealthBar
 @onready var exp_bar: ProgressBar = $Panel/VBox/ExpBar
+@onready var dash_bar: ProgressBar = $Panel/VBox/DashBar
 @onready var floor_label: Label = $Panel/VBox/FloorLabel
 @onready var score_label: Label = $Panel/VBox/ScoreLabel
 @onready var level_label: Label = $Panel/VBox/LevelLabel
@@ -10,16 +11,27 @@ extends CanvasLayer
 @onready var minimap: Control = $Minimap
 @onready var level_up_popup: CanvasLayer = $LevelUpPopup
 
+var _player: Node = null
+
 func _ready() -> void:
 	GameManager.level_up.connect(_on_level_up)
 	_refresh_exp()
 
+func _process(_delta: float) -> void:
+	if _player == null:
+		_player = get_tree().get_first_node_in_group("player")
+		return
+	# 대시 쿨다운 표시
+	var cd = _player._dash_cooldown_timer
+	var ratio = 1.0 - clamp(cd / _player.DASH_COOLDOWN, 0.0, 1.0)
+	dash_bar.value = ratio * 100.0
+	dash_bar.modulate = Color(0.4, 0.9, 1.0) if ratio >= 1.0 else Color(0.6, 0.6, 0.6)
+
 func update_health(current: int, maximum: int) -> void:
 	health_bar.max_value = maximum
 	health_bar.value = current
-	# 색상: 초록 → 노랑 → 빨강
 	var ratio = float(current) / float(maximum)
-	health_bar.modulate = Color(1.0, ratio, ratio * 0.3)
+	health_bar.modulate = Color(1.0, ratio * 0.85, ratio * 0.2)
 
 func update_floor(floor_num: int) -> void:
 	floor_label.text = "Floor  %d" % floor_num

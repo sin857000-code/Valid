@@ -4,6 +4,7 @@ const ENEMY_SCRIPTS = [
 	"res://scripts/enemies/enemy_base.gd",
 	"res://scripts/enemies/enemy_fast.gd",
 	"res://scripts/enemies/enemy_tank.gd",
+	"res://scripts/enemies/enemy_ranged.gd",
 ]
 const ITEM_SCRIPTS = [
 	"res://scripts/items/item_health_potion.gd",
@@ -22,6 +23,8 @@ const BOSS_INTERVAL = 3
 @onready var generator: Node = $DungeonGenerator
 @onready var entities: Node2D = $Entities
 @onready var map_renderer: Node2D = $MapRenderer
+@onready var fog: Node2D = $FogOfWar
+@onready var transition: CanvasLayer = $FloorTransition
 
 var player: CharacterBody2D
 var camera: Camera2D
@@ -31,6 +34,7 @@ var is_boss_floor: bool = false
 
 func _ready() -> void:
 	_spawn_player()
+	transition.fade_out()
 	_generate_floor()
 
 func _spawn_player() -> void:
@@ -46,7 +50,6 @@ func _spawn_player() -> void:
 
 	player.health_changed.connect(hud.update_health)
 	player.player_died.connect(_on_player_died)
-	player.take_damage.connect(_shake_camera)
 
 func _generate_floor() -> void:
 	for child in entities.get_children():
@@ -55,6 +58,7 @@ func _generate_floor() -> void:
 	var grid = generator.generate()
 	rooms = generator.rooms
 	map_renderer.setup(grid, generator.get_map_width(), generator.get_map_height())
+	fog.setup(generator.get_map_width(), generator.get_map_height())
 
 	player.global_position = Vector2(rooms[0].get_center()) * TILE
 	hud.minimap.setup(rooms)
@@ -70,6 +74,7 @@ func _generate_floor() -> void:
 			_spawn_enemy()
 
 	_spawn_items()
+	transition.fade_out()
 
 func _spawn_enemy() -> void:
 	var room = rooms[randi_range(1, rooms.size() - 2)]
@@ -96,7 +101,6 @@ func _spawn_items() -> void:
 		var room = rooms[randi_range(1, rooms.size() - 1)]
 		_make_item(load(ITEM_SCRIPTS[randi() % ITEM_SCRIPTS.size()]),
 			Vector2(room.get_center()) * TILE + Vector2(randi_range(-20, 20), randi_range(-20, 20)))
-
 	if is_boss_floor or GameManager.current_floor % 5 == 0:
 		var room = rooms[randi_range(1, rooms.size() - 1)]
 		_make_item(load(WEAPON_SCRIPTS[randi() % WEAPON_SCRIPTS.size()]),
@@ -108,13 +112,6 @@ func _make_item(script: GDScript, pos: Vector2) -> void:
 	entities.add_child(item)
 	item.global_position = pos
 
-func _shake_camera(_amount = null) -> void:
-	if camera == null:
-		return
-	var tween = create_tween()
-	tween.tween_property(camera, "offset", Vector2(randi_range(-4, 4), randi_range(-4, 4)), 0.05)
-	tween.tween_property(camera, "offset", Vector2.ZERO, 0.05)
-
 func _on_enemy_died(enemy: Node) -> void:
 	GameManager.add_score(enemy.exp_reward)
 	hud.update_score(GameManager.score)
@@ -123,7 +120,8 @@ func _on_enemy_died(enemy: Node) -> void:
 		GameManager.next_floor()
 		GameManager.save()
 		hud.update_floor(GameManager.current_floor)
-		_generate_floor()
+		transition.fade_in(_generate_floor)
 
 func _on_player_died() -> void:
-	get_tree().change_scene_to_file("res://scenes/ui/game_over.tscn")
+	transition.fade_in(func():
+		get_tree().change_scene_to_file("res://scenes/ui/game_over.tscn"))
