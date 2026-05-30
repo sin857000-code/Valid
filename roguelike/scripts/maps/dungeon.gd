@@ -40,6 +40,7 @@ const ITEM_SCRIPTS = [
 	"res://scripts/items/item_lucky.gd",
 	"res://scripts/items/item_time_slow.gd",
 	"res://scripts/items/item_explosive_shots.gd",
+	"res://scripts/items/item_power_surge.gd",
 ]
 const WEAPON_SCRIPTS = [
 	"res://scripts/items/weapon_dagger.gd",
@@ -55,6 +56,7 @@ const WEAPON_SCRIPTS = [
 	"res://scripts/items/weapon_scythe.gd",
 	"res://scripts/items/weapon_hammer.gd",
 	"res://scripts/items/weapon_spear.gd",
+	"res://scripts/items/weapon_crossbow.gd",
 ]
 const TILE = 16
 const BASE_ENEMIES = 5

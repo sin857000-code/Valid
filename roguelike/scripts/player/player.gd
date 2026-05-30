@@ -248,6 +248,15 @@ func _physics_process_invincible(delta: float) -> void:
 				remove_meta("rage_dmg_mult")
 		else:
 			set_meta("rage_timer", rt)
+	if has_meta("power_surge_timer"):
+		var pt = get_meta("power_surge_timer") - delta
+		if pt <= 0.0:
+			remove_meta("power_surge_timer")
+			if has_meta("power_surge_base"):
+				attack_damage = get_meta("power_surge_base")
+				remove_meta("power_surge_base")
+		else:
+			set_meta("power_surge_timer", pt)
 
 func take_damage(amount: int) -> void:
 	if _is_dashing:

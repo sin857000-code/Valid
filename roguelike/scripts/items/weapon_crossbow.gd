@@ -1,0 +1,16 @@
+extends "res://scripts/items/weapon_base.gd"
+
+func _ready() -> void:
+	weapon_name = "석궁"
+	damage = 25
+	range_radius = 100.0
+	cooldown = 1.0
+	item_color = Color(0.5, 0.3, 0.1)
+	super._ready()
+
+func _apply_effect(player: Node) -> void:
+	super._apply_effect(player)
+	player.set_meta("bouncing_shots", true)
+	for k in ["attack_arc", "multishot", "freeze_on_hit", "chain_lightning", "scythe_mode", "stun_on_hit", "pierce_shot"]:
+		if player.has_meta(k):
+			player.remove_meta(k)
