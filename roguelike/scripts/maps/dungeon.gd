@@ -61,6 +61,16 @@ const ENEMY_SCRIPTS = [
 	"res://scripts/enemies/enemy_ogre.gd",
 	"res://scripts/enemies/enemy_assassin.gd",
 	"res://scripts/enemies/enemy_warlock.gd",
+	"res://scripts/enemies/enemy_golem_fire.gd",
+	"res://scripts/enemies/enemy_phantom_archer.gd",
+	"res://scripts/enemies/enemy_rock_elemental.gd",
+	"res://scripts/enemies/enemy_sorcerer.gd",
+	"res://scripts/enemies/enemy_plague_rat.gd",
+	"res://scripts/enemies/enemy_bone_warrior.gd",
+	"res://scripts/enemies/enemy_thunder_bird.gd",
+	"res://scripts/enemies/enemy_dark_elf.gd",
+	"res://scripts/enemies/enemy_storm_giant.gd",
+	"res://scripts/enemies/enemy_cursed_slime.gd",
 ]
 const ITEM_SCRIPTS = [
 	"res://scripts/items/item_health_potion.gd",
@@ -121,6 +131,9 @@ const WEAPON_SCRIPTS = [
 	"res://scripts/items/weapon_katana.gd",
 	"res://scripts/items/weapon_frost_bow.gd",
 	"res://scripts/items/weapon_flame_sword.gd",
+	"res://scripts/items/weapon_void_blade.gd",
+	"res://scripts/items/weapon_chain_whip.gd",
+	"res://scripts/items/weapon_thunder_staff.gd",
 ]
 const TILE = 16
 const BASE_ENEMIES = 5
