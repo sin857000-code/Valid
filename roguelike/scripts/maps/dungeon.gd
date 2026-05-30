@@ -35,6 +35,7 @@ const ITEM_SCRIPTS = [
 	"res://scripts/items/item_vampire.gd",
 	"res://scripts/items/item_thorns.gd",
 	"res://scripts/items/item_cooldown_reduction.gd",
+	"res://scripts/items/item_lucky.gd",
 ]
 const WEAPON_SCRIPTS = [
 	"res://scripts/items/weapon_dagger.gd",
@@ -49,6 +50,7 @@ const WEAPON_SCRIPTS = [
 	"res://scripts/items/weapon_axe.gd",
 	"res://scripts/items/weapon_scythe.gd",
 	"res://scripts/items/weapon_hammer.gd",
+	"res://scripts/items/weapon_spear.gd",
 ]
 const TILE = 16
 const BASE_ENEMIES = 5
@@ -138,6 +140,8 @@ func _generate_floor() -> void:
 		_spawn_lava_tiles()
 	if GameManager.current_floor % 4 == 2 and not is_boss_floor:
 		_spawn_shop()
+	if GameManager.current_floor % 3 == 0 and not is_boss_floor:
+		_spawn_healing_fountain()
 	transition.fade_out()
 
 func _spawn_enemy() -> void:
@@ -237,6 +241,13 @@ func _spawn_traps() -> void:
 		trap.set_script(load("res://scripts/maps/trap_tile.gd"))
 		entities.add_child(trap)
 		trap.global_position = Vector2(room.get_center()) * TILE + Vector2(randi_range(-24, 24), randi_range(-24, 24))
+
+func _spawn_healing_fountain() -> void:
+	var room = rooms[randi_range(1, rooms.size() - 2)]
+	var fountain = Area2D.new()
+	fountain.set_script(load("res://scripts/maps/healing_fountain.gd"))
+	entities.add_child(fountain)
+	fountain.global_position = Vector2(room.get_center()) * TILE
 
 func _spawn_shop() -> void:
 	var room = rooms[randi_range(1, rooms.size() - 2)]

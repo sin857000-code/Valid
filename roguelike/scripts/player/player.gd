@@ -155,11 +155,14 @@ func _do_attack() -> void:
 	for body in get_tree().get_nodes_in_group("enemy"):
 		var body_dir = body.global_position - global_position
 		var scythe = has_meta("scythe_mode") and get_meta("scythe_mode")
+		var pierce = has_meta("pierce_shot") and get_meta("pierce_shot")
 		var in_arc = arc_mode and body.global_position.distance_to(global_position) < (attack_range * 1.8 if scythe else attack_range * 1.3)
+		var in_pierce = pierce and body.global_position.distance_to(global_position) < attack_range and body_dir.normalized().dot(facing) > 0.7
 		var in_cone = multi_mode and body_dir.length() < attack_range * 1.2 and body_dir.normalized().dot(facing) > 0.5
-		var in_range = in_arc or in_cone or body.global_position.distance_to(attack_pos) < attack_range
+		var in_range = in_arc or in_cone or in_pierce or body.global_position.distance_to(attack_pos) < attack_range
 		if in_range:
-			var is_crit = randf() < 0.12
+			var crit_chance = 0.12 + (get_meta("crit_bonus") if has_meta("crit_bonus") else 0.0)
+			var is_crit = randf() < crit_chance
 			var rage_mult = get_meta("rage_dmg_mult") if has_meta("rage_dmg_mult") else 1.0
 			var dmg = int(attack_damage * (3 if is_crit else 1) * rage_mult)
 			_combo += 1
