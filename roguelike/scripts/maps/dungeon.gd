@@ -26,6 +26,9 @@ const ENEMY_SCRIPTS = [
 	"res://scripts/enemies/enemy_spider.gd",
 	"res://scripts/enemies/enemy_bomber.gd",
 	"res://scripts/enemies/enemy_serpent.gd",
+	"res://scripts/enemies/enemy_wisp.gd",
+	"res://scripts/enemies/enemy_berserker.gd",
+	"res://scripts/enemies/enemy_witch.gd",
 ]
 const ITEM_SCRIPTS = [
 	"res://scripts/items/item_health_potion.gd",
@@ -72,6 +75,7 @@ const WEAPON_SCRIPTS = [
 	"res://scripts/items/weapon_crossbow.gd",
 	"res://scripts/items/weapon_trident.gd",
 	"res://scripts/items/weapon_flail.gd",
+	"res://scripts/items/weapon_holy_sword.gd",
 ]
 const TILE = 16
 const BASE_ENEMIES = 5

@@ -202,6 +202,8 @@ func _do_attack() -> void:
 				var steal = int(dmg * get_meta("lifesteal"))
 				if steal > 0:
 					heal(steal)
+			if has_meta("holy_light") and get_meta("holy_light") and is_crit:
+				heal(5)
 			hit_any = true
 			if is_crit:
 				var hp = load("res://scripts/ui/hit_particle.gd")
