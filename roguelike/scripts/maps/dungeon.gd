@@ -48,6 +48,19 @@ const ENEMY_SCRIPTS = [
 	"res://scripts/enemies/enemy_trickster.gd",
 	"res://scripts/enemies/enemy_angel.gd",
 	"res://scripts/enemies/enemy_cursed_archer.gd",
+	"res://scripts/enemies/enemy_lich.gd",
+	"res://scripts/enemies/enemy_wyvern.gd",
+	"res://scripts/enemies/enemy_death_knight.gd",
+	"res://scripts/enemies/enemy_medusa.gd",
+	"res://scripts/enemies/enemy_chimera.gd",
+	"res://scripts/enemies/enemy_werewolf.gd",
+	"res://scripts/enemies/enemy_mage.gd",
+	"res://scripts/enemies/enemy_stalker.gd",
+	"res://scripts/enemies/enemy_hellhound.gd",
+	"res://scripts/enemies/enemy_banshee.gd",
+	"res://scripts/enemies/enemy_ogre.gd",
+	"res://scripts/enemies/enemy_assassin.gd",
+	"res://scripts/enemies/enemy_warlock.gd",
 ]
 const ITEM_SCRIPTS = [
 	"res://scripts/items/item_health_potion.gd",
@@ -78,6 +91,11 @@ const ITEM_SCRIPTS = [
 	"res://scripts/items/item_gold_rush.gd",
 	"res://scripts/items/item_clone.gd",
 	"res://scripts/items/item_mirror_shield.gd",
+	"res://scripts/items/item_haste.gd",
+	"res://scripts/items/item_stun_grenade.gd",
+	"res://scripts/items/item_frost_aura.gd",
+	"res://scripts/items/item_fire_cloak.gd",
+	"res://scripts/items/item_soul_gem.gd",
 ]
 const WEAPON_SCRIPTS = [
 	"res://scripts/items/weapon_dagger.gd",
@@ -99,6 +117,10 @@ const WEAPON_SCRIPTS = [
 	"res://scripts/items/weapon_holy_sword.gd",
 	"res://scripts/items/weapon_dark_blade.gd",
 	"res://scripts/items/weapon_soul_staff.gd",
+	"res://scripts/items/weapon_whip.gd",
+	"res://scripts/items/weapon_katana.gd",
+	"res://scripts/items/weapon_frost_bow.gd",
+	"res://scripts/items/weapon_flame_sword.gd",
 ]
 const TILE = 16
 const BASE_ENEMIES = 5
