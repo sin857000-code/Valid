@@ -160,6 +160,9 @@ func _do_attack() -> void:
 			var combo_mult = 1.0 + (_combo / 10.0)
 			dmg = int(float(dmg) * combo_mult)
 			body.take_damage(dmg, global_position)
+			if has_meta("freeze_on_hit") and get_meta("freeze_on_hit"):
+				if body.has_method("get") and body.get("status") != null:
+					body.status.apply_slow(0.2, 1.8)
 			if has_meta("lifesteal"):
 				var steal = int(dmg * get_meta("lifesteal"))
 				if steal > 0:

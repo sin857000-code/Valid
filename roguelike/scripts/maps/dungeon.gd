@@ -10,6 +10,7 @@ const ENEMY_SCRIPTS = [
 	"res://scripts/enemies/enemy_swarm.gd",
 	"res://scripts/enemies/enemy_armored.gd",
 	"res://scripts/enemies/enemy_ice.gd",
+	"res://scripts/enemies/enemy_teleporter.gd",
 ]
 const ITEM_SCRIPTS = [
 	"res://scripts/items/item_health_potion.gd",
@@ -30,6 +31,7 @@ const WEAPON_SCRIPTS = [
 	"res://scripts/items/weapon_boomerang.gd",
 	"res://scripts/items/weapon_shotgun.gd",
 	"res://scripts/items/weapon_wand.gd",
+	"res://scripts/items/weapon_freeze.gd",
 ]
 const TILE = 16
 const BASE_ENEMIES = 5
