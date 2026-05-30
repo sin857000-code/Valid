@@ -54,7 +54,7 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
-func take_damage(amount: int) -> void:
+func take_damage(amount: int, source_pos: Vector2 = Vector2.ZERO) -> void:
 	if _dying:
 		return
 	current_health -= amount
@@ -62,7 +62,10 @@ func take_damage(amount: int) -> void:
 	_visual.update_hp(float(current_health) / float(max_health))
 	_visual.flash_hit()
 
-	# 데미지 숫자 표시
+	if source_pos != Vector2.ZERO:
+		var kb_dir = (global_position - source_pos).normalized()
+		velocity += kb_dir * 180.0
+
 	var dn = load("res://scripts/ui/damage_number.gd")
 	dn.spawn(get_parent(), global_position, amount)
 

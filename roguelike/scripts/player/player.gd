@@ -95,7 +95,7 @@ func _do_attack() -> void:
 	var attack_pos = global_position + facing * attack_range
 	for body in get_tree().get_nodes_in_group("enemy"):
 		if body.global_position.distance_to(attack_pos) < attack_range:
-			body.take_damage(attack_damage)
+			body.take_damage(attack_damage, global_position)
 
 func take_damage(amount: int) -> void:
 	if _is_dashing:

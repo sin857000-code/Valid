@@ -7,6 +7,7 @@ const ENEMY_SCRIPTS = [
 	"res://scripts/enemies/enemy_ranged.gd",
 	"res://scripts/enemies/enemy_exploder.gd",
 	"res://scripts/enemies/enemy_poison.gd",
+	"res://scripts/enemies/enemy_swarm.gd",
 ]
 const ITEM_SCRIPTS = [
 	"res://scripts/items/item_health_potion.gd",
@@ -36,6 +37,7 @@ var enemy_count: int = 0
 var is_boss_floor: bool = false
 
 func _ready() -> void:
+	add_to_group("dungeon")
 	_spawn_player()
 	transition.fade_out()
 	_generate_floor()
@@ -99,6 +101,11 @@ func _make_enemy(script: GDScript) -> CharacterBody2D:
 	enemy.set_script(script)
 	return enemy
 
+func register_enemy(enemy: Node) -> void:
+	entities.add_child(enemy)
+	enemy.enemy_died.connect(_on_enemy_died)
+	enemy_count += 1
+
 func _spawn_items() -> void:
 	for i in range(3):
 		var room = rooms[randi_range(1, rooms.size() - 1)]
@@ -118,6 +125,9 @@ func _make_item(script: GDScript, pos: Vector2) -> void:
 func _on_enemy_died(enemy: Node) -> void:
 	GameManager.add_score(enemy.exp_reward)
 	hud.update_score(GameManager.score)
+	if randf() < 0.18:
+		var drop_pos = enemy.global_position + Vector2(randf_range(-8, 8), randf_range(-8, 8))
+		_make_item(load(ITEM_SCRIPTS[randi() % ITEM_SCRIPTS.size()]), drop_pos)
 	enemy_count -= 1
 	if enemy_count <= 0:
 		GameManager.next_floor()
