@@ -134,6 +134,8 @@ func _generate_floor() -> void:
 	_spawn_chests()
 	if GameManager.current_floor >= 16:
 		_spawn_lava_tiles()
+	if GameManager.current_floor % 4 == 2 and not is_boss_floor:
+		_spawn_shop()
 	transition.fade_out()
 
 func _spawn_enemy() -> void:
@@ -233,6 +235,13 @@ func _spawn_traps() -> void:
 		trap.set_script(load("res://scripts/maps/trap_tile.gd"))
 		entities.add_child(trap)
 		trap.global_position = Vector2(room.get_center()) * TILE + Vector2(randi_range(-24, 24), randi_range(-24, 24))
+
+func _spawn_shop() -> void:
+	var room = rooms[randi_range(1, rooms.size() - 2)]
+	var shop = Node2D.new()
+	shop.set_script(load("res://scripts/maps/shop_room.gd"))
+	entities.add_child(shop)
+	shop.setup(Vector2(room.get_center()) * TILE)
 
 func _spawn_lava_tiles() -> void:
 	var count = 4 + (GameManager.current_floor - 16) / 2
