@@ -42,12 +42,22 @@ func _process(delta: float) -> void:
 		queue_free()
 		return
 
-	# 플레이어 충돌 체크
-	var player = get_tree().get_first_node_in_group("player")
-	if player and global_position.distance_to(player.global_position) < 10.0:
-		player.take_damage(_damage)
-		_spawn_impact()
-		queue_free()
+	if has_meta("player_proj") and get_meta("player_proj"):
+		# Player-fired: hits enemies
+		for enemy in get_tree().get_nodes_in_group("enemy"):
+			if global_position.distance_to(enemy.global_position) < 12.0:
+				var dmg = get_meta("dmg_override") if has_meta("dmg_override") else _damage
+				enemy.take_damage(dmg, global_position)
+				_spawn_impact()
+				queue_free()
+				return
+	else:
+		# Enemy-fired: hits player
+		var player = get_tree().get_first_node_in_group("player")
+		if player and global_position.distance_to(player.global_position) < 10.0:
+			player.take_damage(_damage)
+			_spawn_impact()
+			queue_free()
 
 func _spawn_impact() -> void:
 	var hp = load("res://scripts/ui/hit_particle.gd")

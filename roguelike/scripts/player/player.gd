@@ -170,6 +170,17 @@ func _do_attack() -> void:
 				hp.spawn(get_parent(), body.global_position, Color(1.0, 0.6, 0.0))
 	if not hit_any:
 		_combo = 0
+	if has_meta("bouncing_shots") and get_meta("bouncing_shots"):
+		_fire_player_projectile()
+
+func _fire_player_projectile() -> void:
+	var proj = Node2D.new()
+	proj.set_script(load("res://scripts/enemies/projectile.gd"))
+	get_parent().add_child(proj)
+	proj.global_position = global_position
+	proj.setup(facing, attack_damage, 180.0)
+	proj.set_meta("player_proj", true)
+	proj.set_meta("dmg_override", attack_damage)
 
 func _physics_process_invincible(delta: float) -> void:
 	if has_meta("invincible_timer"):
