@@ -153,6 +153,18 @@ const ENEMY_SCRIPTS = [
 	"res://scripts/enemies/enemy_swamp_creature.gd",
 	"res://scripts/enemies/enemy_chaos_knight.gd",
 	"res://scripts/enemies/enemy_elder_lich.gd",
+	"res://scripts/enemies/enemy_abyss_walker.gd",
+	"res://scripts/enemies/enemy_bone_giant.gd",
+	"res://scripts/enemies/enemy_ember_spirit.gd",
+	"res://scripts/enemies/enemy_dark_elemental.gd",
+	"res://scripts/enemies/enemy_goblin_shaman.gd",
+	"res://scripts/enemies/enemy_ancient_wyrm.gd",
+	"res://scripts/enemies/enemy_cursed_witch.gd",
+	"res://scripts/enemies/enemy_lava_creature.gd",
+	"res://scripts/enemies/enemy_shadow_mage.gd",
+	"res://scripts/enemies/enemy_crystal_knight.gd",
+	"res://scripts/enemies/enemy_chaos_beast.gd",
+	"res://scripts/enemies/enemy_death_lord.gd",
 ]
 const ITEM_SCRIPTS = [
 	"res://scripts/items/item_health_potion.gd",
