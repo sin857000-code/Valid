@@ -17,6 +17,8 @@ var _player: Node = null
 var _attack_timer: float = 0.0
 var _visual: Node2D
 var _dying: bool = false
+var _wander_dir: Vector2 = Vector2.RIGHT
+var _wander_timer: float = 0.0
 
 func _ready() -> void:
 	add_to_group("enemy")
@@ -50,7 +52,12 @@ func _physics_process(delta: float) -> void:
 	elif dist < chase_range:
 		velocity = (_player.global_position - global_position).normalized() * move_speed
 	else:
-		velocity = velocity.move_toward(Vector2.ZERO, move_speed)
+		_wander_timer -= get_physics_process_delta_time()
+		if _wander_timer <= 0.0:
+			_wander_timer = randf_range(1.5, 3.0)
+			var angle = randf() * TAU
+			_wander_dir = Vector2(cos(angle), sin(angle))
+		velocity = velocity.move_toward(_wander_dir * move_speed * 0.4, move_speed * 0.5)
 
 	move_and_slide()
 

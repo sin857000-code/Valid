@@ -40,6 +40,9 @@ var is_boss_floor: bool = false
 
 func _ready() -> void:
 	add_to_group("dungeon")
+	var pause_menu = CanvasLayer.new()
+	pause_menu.set_script(load("res://scripts/ui/pause_menu.gd"))
+	add_child(pause_menu)
 	_spawn_player()
 	transition.fade_out()
 	_generate_floor()

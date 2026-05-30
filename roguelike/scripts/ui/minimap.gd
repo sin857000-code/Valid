@@ -27,6 +27,12 @@ func _draw() -> void:
 		draw_rect(rect, Color(0.4, 0.4, 0.4, 0.8))
 		draw_rect(rect, Color.WHITE, false)
 
+	# 적 위치
+	for enemy in get_tree().get_nodes_in_group("enemy"):
+		var etile = enemy.global_position / 16.0
+		var epos = MAP_OFFSET + etile * TILE_SIZE
+		draw_circle(epos, 2.0, Color(1.0, 0.25, 0.25, 0.9))
+
 	# 플레이어 위치
 	if _player:
 		var tile_pos = _player.global_position / 16.0
