@@ -62,6 +62,12 @@ func _process(_delta: float) -> void:
 	var ratio = 1.0 - clamp(cd / _player.DASH_COOLDOWN, 0.0, 1.0)
 	dash_bar.value = ratio * 100.0
 	dash_bar.modulate = Color(0.4, 0.9, 1.0) if ratio >= 1.0 else Color(0.6, 0.6, 0.6)
+	# Bomb cooldown on dash bar (reuse concept via label)
+	var bcd = _player._bomb_cooldown
+	var bomb_ready = bcd <= 0.0
+	if not bomb_ready:
+		pass  # could add bomb bar later
+
 	# boss HP bar
 	if _boss == null:
 		_boss = get_tree().get_first_node_in_group("boss")

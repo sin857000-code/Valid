@@ -103,6 +103,7 @@ func _generate_floor() -> void:
 	_spawn_items()
 	_spawn_traps()
 	_spawn_secret_loot()
+	_spawn_chests()
 	transition.fade_out()
 
 func _spawn_enemy() -> void:
@@ -160,6 +161,15 @@ func _spawn_items() -> void:
 		var room = rooms[randi_range(1, rooms.size() - 1)]
 		_make_item(load(WEAPON_SCRIPTS[randi() % WEAPON_SCRIPTS.size()]),
 			Vector2(room.get_center()) * TILE)
+
+func _spawn_chests() -> void:
+	var chest_count = 1 + (1 if GameManager.current_floor % 4 == 0 else 0)
+	for i in range(chest_count):
+		var room = rooms[randi_range(1, rooms.size() - 2)]
+		var chest = Area2D.new()
+		chest.set_script(load("res://scripts/maps/chest.gd"))
+		entities.add_child(chest)
+		chest.global_position = Vector2(room.get_center()) * TILE + Vector2(randi_range(-16, 16), randi_range(-16, 16))
 
 func _spawn_secret_loot() -> void:
 	var sr = generator.secret_room

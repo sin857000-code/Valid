@@ -26,6 +26,10 @@ var status: Node
 var _combo: int = 0
 var _combo_timer: float = 0.0
 var _camera: Camera2D
+var _bomb_cooldown: float = 0.0
+const BOMB_COOLDOWN = 8.0
+const BOMB_RANGE = 80.0
+const BOMB_DAMAGE = 35
 
 func _ready() -> void:
 	add_to_group("player")
@@ -99,6 +103,11 @@ func _physics_process(delta: float) -> void:
 	# 공격: Space
 	if Input.is_action_just_pressed("ui_accept") and _attack_timer <= 0.0:
 		_do_attack()
+
+	# 폭탄: E (ui_end)
+	_bomb_cooldown -= delta
+	if Input.is_action_just_pressed("ui_end") and _bomb_cooldown <= 0.0:
+		_do_bomb()
 
 func _start_dash() -> void:
 	_is_dashing = true
@@ -212,6 +221,26 @@ func _play_death_anim() -> void:
 	var tween = create_tween()
 	tween.tween_property(self, "scale", Vector2.ZERO, 0.3).set_delay(0.2)
 	tween.tween_callback(func(): player_died.emit())
+
+func _do_bomb() -> void:
+	_bomb_cooldown = BOMB_COOLDOWN
+	# Expanding ring visual
+	for i in range(3):
+		var ring = ColorRect.new()
+		ring.size = Vector2(BOMB_RANGE * 2, BOMB_RANGE * 2)
+		ring.position = global_position - Vector2(BOMB_RANGE, BOMB_RANGE)
+		ring.color = Color(1.0, 0.6, 0.1, 0.5)
+		get_parent().add_child(ring)
+		var t = ring.create_tween().set_parallel(true)
+		t.tween_property(ring, "scale", Vector2(1.5, 1.5), 0.4).set_delay(i * 0.1)
+		t.tween_property(ring, "modulate:a", 0.0, 0.4).set_delay(i * 0.1)
+		t.tween_callback(ring.queue_free).set_delay(0.5 + i * 0.1)
+	var hp = load("res://scripts/ui/hit_particle.gd")
+	hp.spawn(get_parent(), global_position, Color(1.0, 0.5, 0.1))
+	for body in get_tree().get_nodes_in_group("enemy"):
+		if body.global_position.distance_to(global_position) < BOMB_RANGE:
+			body.take_damage(BOMB_DAMAGE, global_position)
+	_screen_shake()
 
 func _screen_shake() -> void:
 	if _camera == null:
