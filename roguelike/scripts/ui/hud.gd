@@ -116,6 +116,19 @@ func show_boss_alert() -> void:
 	tween.tween_property(boss_alert, "modulate:a", 0.0, 0.5)
 	tween.tween_callback(func(): boss_alert.visible = false)
 
+func show_perfect_bonus(bonus: int) -> void:
+	var lbl = Label.new()
+	lbl.text = "PERFECT! +%d" % bonus
+	lbl.add_theme_font_size_override("font_size", 20)
+	lbl.modulate = Color(1.0, 1.0, 0.2)
+	lbl.position = Vector2(80, 170)
+	add_child(lbl)
+	var tween = lbl.create_tween()
+	tween.tween_property(lbl, "position:y", 130.0, 0.4)
+	tween.tween_interval(1.5)
+	tween.tween_property(lbl, "modulate:a", 0.0, 0.4)
+	tween.tween_callback(lbl.queue_free)
+
 func show_floor_clear(floor_num: int) -> void:
 	var lbl = Label.new()
 	lbl.text = "FLOOR %d CLEARED!" % floor_num

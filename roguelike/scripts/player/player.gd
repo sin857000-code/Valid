@@ -15,6 +15,7 @@ const DASH_COOLDOWN = 0.8
 
 var current_health: int
 var move_speed_bonus: float = 1.0
+var damage_free_time: float = 0.0
 var _attack_timer: float = 0.0
 var _dash_timer: float = 0.0
 var _dash_cooldown_timer: float = 0.0
@@ -74,6 +75,7 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		return
 
+	damage_free_time += delta
 	_physics_process_invincible(delta)
 	status.tick(delta, self)
 	var direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
@@ -155,6 +157,7 @@ func take_damage(amount: int) -> void:
 		if has_meta("shield_visual"):
 			get_meta("shield_visual").queue_free()
 		return
+	damage_free_time = 0.0
 	current_health -= amount
 	current_health = max(current_health, 0)
 	health_changed.emit(current_health, max_health)

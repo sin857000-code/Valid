@@ -8,6 +8,7 @@ const ENEMY_SCRIPTS = [
 	"res://scripts/enemies/enemy_exploder.gd",
 	"res://scripts/enemies/enemy_poison.gd",
 	"res://scripts/enemies/enemy_swarm.gd",
+	"res://scripts/enemies/enemy_armored.gd",
 ]
 const ITEM_SCRIPTS = [
 	"res://scripts/items/item_health_potion.gd",
@@ -146,6 +147,11 @@ func _on_enemy_died(enemy: Node) -> void:
 		_make_item(load(ITEM_SCRIPTS[randi() % ITEM_SCRIPTS.size()]), drop_pos)
 	enemy_count -= 1
 	if enemy_count <= 0:
+		if player and player.damage_free_time > 5.0:
+			var bonus = 50 * GameManager.current_floor
+			GameManager.add_score(bonus)
+			hud.update_score(GameManager.score)
+			hud.show_perfect_bonus(bonus)
 		hud.show_floor_clear(GameManager.current_floor)
 		GameManager.next_floor()
 		GameManager.save()
