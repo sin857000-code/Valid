@@ -60,6 +60,7 @@ const WEAPON_SCRIPTS = [
 	"res://scripts/items/weapon_hammer.gd",
 	"res://scripts/items/weapon_spear.gd",
 	"res://scripts/items/weapon_crossbow.gd",
+	"res://scripts/items/weapon_trident.gd",
 ]
 const TILE = 16
 const BASE_ENEMIES = 5
@@ -151,6 +152,8 @@ func _generate_floor() -> void:
 		_spawn_shop()
 	if GameManager.current_floor % 3 == 0 and not is_boss_floor:
 		_spawn_healing_fountain()
+	if GameManager.current_floor > 2 and randi() % 3 == 0:
+		_spawn_floor_event()
 	transition.fade_out()
 
 func _spawn_enemy() -> void:
@@ -250,6 +253,13 @@ func _spawn_traps() -> void:
 		trap.set_script(load("res://scripts/maps/trap_tile.gd"))
 		entities.add_child(trap)
 		trap.global_position = Vector2(room.get_center()) * TILE + Vector2(randi_range(-24, 24), randi_range(-24, 24))
+
+func _spawn_floor_event() -> void:
+	var room = rooms[randi_range(1, rooms.size() - 2)]
+	var event = Node2D.new()
+	event.set_script(load("res://scripts/maps/floor_event.gd"))
+	entities.add_child(event)
+	event.setup(Vector2(room.get_center()) * TILE)
 
 func _spawn_healing_fountain() -> void:
 	var room = rooms[randi_range(1, rooms.size() - 2)]
