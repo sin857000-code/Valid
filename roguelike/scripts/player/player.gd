@@ -176,6 +176,20 @@ func _do_attack() -> void:
 			if has_meta("stun_on_hit") and get_meta("stun_on_hit"):
 				if body.has_method("get") and body.get("_stun_timer") != null:
 					body._stun_timer = 0.5
+			if has_meta("explosive_shots") and get_meta("explosive_shots"):
+				var explosion_pos = body.global_position
+				var explosion = ColorRect.new()
+				explosion.size = Vector2(24, 24)
+				explosion.color = Color(1.0, 0.5, 0.1, 0.7)
+				explosion.global_position = explosion_pos - Vector2(12, 12)
+				get_parent().add_child(explosion)
+				var et = explosion.create_tween().set_parallel(true)
+				et.tween_property(explosion, "scale", Vector2(2.0, 2.0), 0.3)
+				et.tween_property(explosion, "modulate:a", 0.0, 0.3)
+				et.tween_callback(explosion.queue_free).set_delay(0.3)
+				for nb in get_tree().get_nodes_in_group("enemy"):
+					if nb != body and nb.global_position.distance_to(explosion_pos) < 25.0:
+						nb.take_damage(int(attack_damage * 0.3), explosion_pos)
 			if has_meta("lifesteal"):
 				var steal = int(dmg * get_meta("lifesteal"))
 				if steal > 0:
