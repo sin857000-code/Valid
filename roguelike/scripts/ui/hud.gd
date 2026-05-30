@@ -26,6 +26,13 @@ func _ready() -> void:
 	_status_label.position = Vector2(8, 148)
 	add_child(_status_label)
 
+	_bomb_bar = ProgressBar.new()
+	_bomb_bar.custom_minimum_size = Vector2(0, 7)
+	_bomb_bar.max_value = 100.0
+	_bomb_bar.value = 100.0
+	_bomb_bar.modulate = Color(1.0, 0.55, 0.1)
+	$Panel/VBox.add_child(_bomb_bar)
+
 	_combo_label = Label.new()
 	_combo_label.add_theme_font_size_override("font_size", 18)
 	_combo_label.modulate = Color(1.0, 0.8, 0.2, 0.0)
@@ -62,11 +69,11 @@ func _process(_delta: float) -> void:
 	var ratio = 1.0 - clamp(cd / _player.DASH_COOLDOWN, 0.0, 1.0)
 	dash_bar.value = ratio * 100.0
 	dash_bar.modulate = Color(0.4, 0.9, 1.0) if ratio >= 1.0 else Color(0.6, 0.6, 0.6)
-	# Bomb cooldown on dash bar (reuse concept via label)
+	# Bomb cooldown bar
 	var bcd = _player._bomb_cooldown
-	var bomb_ready = bcd <= 0.0
-	if not bomb_ready:
-		pass  # could add bomb bar later
+	var bomb_ratio = 1.0 - clamp(bcd / _player.BOMB_COOLDOWN, 0.0, 1.0)
+	_bomb_bar.value = bomb_ratio * 100.0
+	_bomb_bar.modulate = Color(1.0, 0.55, 0.1) if bomb_ratio >= 1.0 else Color(0.5, 0.35, 0.1)
 
 	# boss HP bar
 	if _boss == null:
@@ -110,6 +117,7 @@ func update_health(current: int, maximum: int) -> void:
 
 var _best_floor: int = 1
 var _status_label: Label = null
+var _bomb_bar: ProgressBar = null
 
 func update_floor(floor_num: int) -> void:
 	var theme_name = "Cave"

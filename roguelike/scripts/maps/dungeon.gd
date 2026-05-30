@@ -19,6 +19,7 @@ const ITEM_SCRIPTS = [
 	"res://scripts/items/item_invincible.gd",
 	"res://scripts/items/item_rage.gd",
 	"res://scripts/items/item_regen.gd",
+	"res://scripts/items/item_lifesteal.gd",
 ]
 const WEAPON_SCRIPTS = [
 	"res://scripts/items/weapon_dagger.gd",
@@ -110,6 +111,11 @@ func _spawn_enemy() -> void:
 	var room = rooms[randi_range(1, rooms.size() - 2)]
 	var enemy = _make_enemy(load(ENEMY_SCRIPTS[randi() % ENEMY_SCRIPTS.size()]))
 	entities.add_child(enemy)
+	# Floor scaling: +8% HP and +5% damage per floor beyond 1
+	var scale_factor = 1.0 + (GameManager.current_floor - 1) * 0.08
+	enemy.max_health = int(enemy.max_health * scale_factor)
+	enemy.current_health = enemy.max_health
+	enemy.attack_damage = max(1, int(enemy.attack_damage * (1.0 + (GameManager.current_floor - 1) * 0.05)))
 	enemy.global_position = Vector2(room.get_center()) * TILE
 	enemy.enemy_died.connect(_on_enemy_died)
 	enemy_count += 1

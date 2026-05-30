@@ -156,6 +156,10 @@ func _do_attack() -> void:
 			var combo_mult = 1.0 + (_combo / 10.0)
 			dmg = int(float(dmg) * combo_mult)
 			body.take_damage(dmg, global_position)
+			if has_meta("lifesteal"):
+				var steal = int(dmg * get_meta("lifesteal"))
+				if steal > 0:
+					heal(steal)
 			hit_any = true
 			if is_crit:
 				var hp = load("res://scripts/ui/hit_particle.gd")
