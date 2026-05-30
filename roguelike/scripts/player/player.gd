@@ -94,7 +94,21 @@ func _start_dash() -> void:
 	_is_dashing = true
 	_dash_timer = DASH_DURATION
 	_dash_cooldown_timer = DASH_COOLDOWN
-	modulate.a = 0.4  # 반투명으로 무적 느낌
+	modulate.a = 0.4
+	_spawn_dash_trail()
+
+func _spawn_dash_trail() -> void:
+	for i in range(5):
+		var trail = ColorRect.new()
+		trail.size = Vector2(10, 10)
+		trail.position = global_position - Vector2(5, 5) + Vector2(randf_range(-4, 4), randf_range(-4, 4))
+		trail.color = Color(0.4, 0.7, 1.0, 0.7)
+		get_parent().add_child(trail)
+		var t = trail.create_tween()
+		t.set_parallel(true)
+		t.tween_property(trail, "modulate:a", 0.0, 0.25)
+		t.tween_property(trail, "scale", Vector2(0.3, 0.3), 0.25)
+		t.tween_callback(trail.queue_free).set_delay(0.25)
 
 func _do_attack() -> void:
 	_attack_timer = attack_cooldown

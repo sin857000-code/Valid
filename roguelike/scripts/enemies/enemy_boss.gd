@@ -16,6 +16,7 @@ func _ready() -> void:
 	body_color = Color(0.6, 0.1, 0.8)
 	body_size = 24
 	super._ready()
+	add_to_group("boss")
 
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
@@ -38,6 +39,24 @@ func _activate_phase2() -> void:
 	if _visual:
 		_visual._base_color = body_color
 		_visual._body.color = body_color
+	_spawn_phase2_ring()
+
+func _spawn_phase2_ring() -> void:
+	# Flash white then spawn pulsing ring
+	modulate = Color(2.0, 2.0, 2.0)
+	var flash_tween = create_tween()
+	flash_tween.tween_property(self, "modulate", Color.WHITE, 0.3)
+
+	var ring = ColorRect.new()
+	ring.size = Vector2(60, 60)
+	ring.position = Vector2(-30, -30)
+	ring.color = Color(1.0, 0.1, 0.8, 0.0)
+	add_child(ring)
+	var pulse = ring.create_tween().set_loops()
+	pulse.tween_property(ring, "modulate:a", 0.7, 0.4)
+	pulse.tween_property(ring, "modulate:a", 0.1, 0.4)
+	pulse.tween_property(ring, "scale", Vector2(1.3, 1.3), 0.4)
+	pulse.tween_property(ring, "scale", Vector2(1.0, 1.0), 0.4)
 
 func _summon_minion() -> void:
 	var minion = CharacterBody2D.new()

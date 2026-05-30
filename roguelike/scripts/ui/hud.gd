@@ -13,6 +13,10 @@ extends CanvasLayer
 
 var _player: Node = null
 var _combo_label: Label = null
+var _boss_bar_bg: ColorRect = null
+var _boss_bar: ColorRect = null
+var _boss_label: Label = null
+var _boss: Node = null
 
 func _ready() -> void:
 	GameManager.level_up.connect(_on_level_up)
@@ -23,6 +27,28 @@ func _ready() -> void:
 	_combo_label.position = Vector2(8, 130)
 	add_child(_combo_label)
 
+	# Boss HP bar (bottom center, hidden by default)
+	_boss_bar_bg = ColorRect.new()
+	_boss_bar_bg.color = Color(0.15, 0.05, 0.15)
+	_boss_bar_bg.size = Vector2(300, 18)
+	_boss_bar_bg.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
+	_boss_bar_bg.position = Vector2(-150, -40)
+	_boss_bar_bg.visible = false
+	add_child(_boss_bar_bg)
+
+	_boss_bar = ColorRect.new()
+	_boss_bar.color = Color(0.8, 0.1, 0.8)
+	_boss_bar.size = Vector2(300, 18)
+	_boss_bar.position = Vector2.ZERO
+	_boss_bar_bg.add_child(_boss_bar)
+
+	_boss_label = Label.new()
+	_boss_label.text = "BOSS"
+	_boss_label.add_theme_font_size_override("font_size", 12)
+	_boss_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_boss_label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_boss_bar_bg.add_child(_boss_label)
+
 func _process(_delta: float) -> void:
 	if _player == null:
 		_player = get_tree().get_first_node_in_group("player")
@@ -31,6 +57,18 @@ func _process(_delta: float) -> void:
 	var ratio = 1.0 - clamp(cd / _player.DASH_COOLDOWN, 0.0, 1.0)
 	dash_bar.value = ratio * 100.0
 	dash_bar.modulate = Color(0.4, 0.9, 1.0) if ratio >= 1.0 else Color(0.6, 0.6, 0.6)
+	# boss HP bar
+	if _boss == null:
+		_boss = get_tree().get_first_node_in_group("boss")
+	if _boss != null and is_instance_valid(_boss) and not _boss.is_queued_for_deletion():
+		_boss_bar_bg.visible = true
+		var boss_ratio = float(_boss.current_health) / float(_boss.max_health)
+		_boss_bar.size.x = 300.0 * boss_ratio
+		_boss_bar.color = Color(0.8, 0.1, 0.8) if boss_ratio > 0.5 else Color(1.0, 0.1, 0.5)
+	else:
+		_boss_bar_bg.visible = false
+		_boss = null
+
 	# combo display
 	var combo = _player._combo
 	if combo >= 2:
