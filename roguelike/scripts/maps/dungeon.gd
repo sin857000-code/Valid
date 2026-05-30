@@ -14,6 +14,7 @@ const ENEMY_SCRIPTS = [
 	"res://scripts/enemies/enemy_mirror.gd",
 	"res://scripts/enemies/enemy_healer.gd",
 	"res://scripts/enemies/enemy_giant.gd",
+	"res://scripts/enemies/enemy_summoner.gd",
 ]
 const ITEM_SCRIPTS = [
 	"res://scripts/items/item_health_potion.gd",
@@ -33,6 +34,7 @@ const ITEM_SCRIPTS = [
 	"res://scripts/items/item_second_chance.gd",
 	"res://scripts/items/item_vampire.gd",
 	"res://scripts/items/item_thorns.gd",
+	"res://scripts/items/item_cooldown_reduction.gd",
 ]
 const WEAPON_SCRIPTS = [
 	"res://scripts/items/weapon_dagger.gd",
