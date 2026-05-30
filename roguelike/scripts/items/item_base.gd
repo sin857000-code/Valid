@@ -40,6 +40,7 @@ func _start_pulse() -> void:
 
 func _on_body_entered(body: Node) -> void:
 	if body.is_in_group("player"):
+		load("res://scripts/core/sound_manager.gd").play_item(get_parent())
 		_apply_effect(body)
 		queue_free()
 

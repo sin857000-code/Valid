@@ -20,9 +20,13 @@ var _dash_cooldown_timer: float = 0.0
 var _is_dashing: bool = false
 var facing: Vector2 = Vector2.RIGHT
 var _visual: Node2D
+var status: Node  # StatusEffect component
 
 func _ready() -> void:
 	add_to_group("player")
+	status = load("res://scripts/core/status_effect.gd").new()
+	status.name = "StatusEffect"
+	add_child(status)
 	_apply_level_stats(GameManager.level)
 	current_health = max_health
 	health_changed.emit(current_health, max_health)
@@ -42,6 +46,7 @@ func _apply_level_stats(lv: int) -> void:
 	attack_damage = 10 + (lv - 1) * 3
 
 func _on_level_up(new_level: int) -> void:
+	load("res://scripts/core/sound_manager.gd").play_level_up(self)
 	var old_max = max_health
 	_apply_level_stats(new_level)
 	current_health += max_health - old_max
@@ -61,8 +66,9 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		return
 
+	status.tick(delta, self)
 	var direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	velocity = direction * SPEED
+	velocity = direction * SPEED * status.get_speed_factor()
 	if direction != Vector2.ZERO:
 		facing = direction.normalized()
 		_visual.update_facing(facing)
@@ -85,6 +91,7 @@ func _start_dash() -> void:
 func _do_attack() -> void:
 	_attack_timer = attack_cooldown
 	_visual.flash_attack()
+	load("res://scripts/core/sound_manager.gd").play_attack(self)
 	var attack_pos = global_position + facing * attack_range
 	for body in get_tree().get_nodes_in_group("enemy"):
 		if body.global_position.distance_to(attack_pos) < attack_range:
@@ -103,6 +110,7 @@ func take_damage(amount: int) -> void:
 	current_health = max(current_health, 0)
 	health_changed.emit(current_health, max_health)
 	_visual.flash_hit()
+	load("res://scripts/core/sound_manager.gd").play_hit(self)
 	var hp = load("res://scripts/ui/hit_particle.gd")
 	hp.spawn(get_parent(), global_position, Color(1, 0.3, 0.3))
 	if current_health == 0:
