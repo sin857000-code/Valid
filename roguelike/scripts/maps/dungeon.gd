@@ -19,6 +19,7 @@ const WEAPON_SCRIPTS = [
 	"res://scripts/items/weapon_dagger.gd",
 	"res://scripts/items/weapon_sword.gd",
 	"res://scripts/items/weapon_staff.gd",
+	"res://scripts/items/weapon_boomerang.gd",
 ]
 const TILE = 16
 const BASE_ENEMIES = 5
@@ -80,6 +81,7 @@ func _generate_floor() -> void:
 			_spawn_enemy()
 
 	_spawn_items()
+	_spawn_traps()
 	transition.fade_out()
 
 func _spawn_enemy() -> void:
@@ -117,6 +119,15 @@ func _spawn_items() -> void:
 		_make_item(load(WEAPON_SCRIPTS[randi() % WEAPON_SCRIPTS.size()]),
 			Vector2(room.get_center()) * TILE)
 
+func _spawn_traps() -> void:
+	var trap_count = 2 + GameManager.current_floor / 2
+	for i in range(trap_count):
+		var room = rooms[randi_range(1, rooms.size() - 2)]
+		var trap = Area2D.new()
+		trap.set_script(load("res://scripts/maps/trap_tile.gd"))
+		entities.add_child(trap)
+		trap.global_position = Vector2(room.get_center()) * TILE + Vector2(randi_range(-24, 24), randi_range(-24, 24))
+
 func _make_item(script: GDScript, pos: Vector2) -> void:
 	var item = Area2D.new()
 	item.set_script(script)
@@ -131,6 +142,7 @@ func _on_enemy_died(enemy: Node) -> void:
 		_make_item(load(ITEM_SCRIPTS[randi() % ITEM_SCRIPTS.size()]), drop_pos)
 	enemy_count -= 1
 	if enemy_count <= 0:
+		hud.show_floor_clear(GameManager.current_floor)
 		GameManager.next_floor()
 		GameManager.save()
 		hud.update_floor(GameManager.current_floor)

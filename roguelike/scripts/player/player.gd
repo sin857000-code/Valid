@@ -100,10 +100,13 @@ func _do_attack() -> void:
 	_attack_timer = attack_cooldown
 	_visual.flash_attack()
 	load("res://scripts/core/sound_manager.gd").play_attack(self)
+	var arc_mode = has_meta("attack_arc") and get_meta("attack_arc")
 	var attack_pos = global_position + facing * attack_range
 	var hit_any = false
 	for body in get_tree().get_nodes_in_group("enemy"):
-		if body.global_position.distance_to(attack_pos) < attack_range:
+		var in_range = arc_mode and body.global_position.distance_to(global_position) < attack_range * 1.3
+		in_range = in_range or body.global_position.distance_to(attack_pos) < attack_range
+		if in_range:
 			var is_crit = randf() < 0.12
 			var dmg = attack_damage * (3 if is_crit else 1)
 			_combo += 1

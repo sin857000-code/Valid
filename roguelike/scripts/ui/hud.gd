@@ -71,6 +71,19 @@ func show_boss_alert() -> void:
 	tween.tween_property(boss_alert, "modulate:a", 0.0, 0.5)
 	tween.tween_callback(func(): boss_alert.visible = false)
 
+func show_floor_clear(floor_num: int) -> void:
+	var lbl = Label.new()
+	lbl.text = "FLOOR %d CLEARED!" % floor_num
+	lbl.add_theme_font_size_override("font_size", 22)
+	lbl.modulate = Color(0.4, 1.0, 0.5)
+	lbl.position = Vector2(80, 200)
+	add_child(lbl)
+	var tween = lbl.create_tween()
+	tween.tween_property(lbl, "position:y", 160.0, 0.4)
+	tween.tween_interval(1.2)
+	tween.tween_property(lbl, "modulate:a", 0.0, 0.5)
+	tween.tween_callback(lbl.queue_free)
+
 func show_weapon_pickup(weapon_name: String) -> void:
 	weapon_label.text = "장착: %s" % weapon_name
 	weapon_label.modulate.a = 1.0
