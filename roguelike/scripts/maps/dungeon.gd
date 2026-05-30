@@ -13,6 +13,7 @@ const ITEM_SCRIPTS = [
 	"res://scripts/items/item_health_potion.gd",
 	"res://scripts/items/item_attack_up.gd",
 	"res://scripts/items/item_shield.gd",
+	"res://scripts/items/item_speed_up.gd",
 ]
 const WEAPON_SCRIPTS = [
 	"res://scripts/items/weapon_dagger.gd",

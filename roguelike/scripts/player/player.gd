@@ -14,13 +14,17 @@ const DASH_COOLDOWN = 0.8
 @export var attack_cooldown: float = 0.4
 
 var current_health: int
+var move_speed_bonus: float = 1.0
 var _attack_timer: float = 0.0
 var _dash_timer: float = 0.0
 var _dash_cooldown_timer: float = 0.0
 var _is_dashing: bool = false
 var facing: Vector2 = Vector2.RIGHT
 var _visual: Node2D
-var status: Node  # StatusEffect component
+var status: Node
+var _combo: int = 0
+var _combo_timer: float = 0.0
+var _camera: Camera2D
 
 func _ready() -> void:
 	add_to_group("player")
@@ -56,6 +60,10 @@ func _on_level_up(new_level: int) -> void:
 func _physics_process(delta: float) -> void:
 	_attack_timer -= delta
 	_dash_cooldown_timer -= delta
+	if _combo_timer > 0.0:
+		_combo_timer -= delta
+		if _combo_timer <= 0.0:
+			_combo = 0
 
 	if _is_dashing:
 		_dash_timer -= delta
@@ -68,7 +76,7 @@ func _physics_process(delta: float) -> void:
 
 	status.tick(delta, self)
 	var direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	velocity = direction * SPEED * status.get_speed_factor()
+	velocity = direction * SPEED * status.get_speed_factor() * move_speed_bonus
 	if direction != Vector2.ZERO:
 		facing = direction.normalized()
 		_visual.update_facing(facing)
@@ -93,9 +101,22 @@ func _do_attack() -> void:
 	_visual.flash_attack()
 	load("res://scripts/core/sound_manager.gd").play_attack(self)
 	var attack_pos = global_position + facing * attack_range
+	var hit_any = false
 	for body in get_tree().get_nodes_in_group("enemy"):
 		if body.global_position.distance_to(attack_pos) < attack_range:
-			body.take_damage(attack_damage, global_position)
+			var is_crit = randf() < 0.12
+			var dmg = attack_damage * (3 if is_crit else 1)
+			_combo += 1
+			_combo_timer = 2.5
+			var combo_mult = 1.0 + (_combo / 10.0)
+			dmg = int(dmg * combo_mult)
+			body.take_damage(dmg, global_position)
+			hit_any = true
+			if is_crit:
+				var hp = load("res://scripts/ui/hit_particle.gd")
+				hp.spawn(get_parent(), body.global_position, Color(1.0, 0.6, 0.0))
+	if not hit_any:
+		_combo = 0
 
 func take_damage(amount: int) -> void:
 	if _is_dashing:
@@ -113,8 +134,20 @@ func take_damage(amount: int) -> void:
 	load("res://scripts/core/sound_manager.gd").play_hit(self)
 	var hp = load("res://scripts/ui/hit_particle.gd")
 	hp.spawn(get_parent(), global_position, Color(1, 0.3, 0.3))
+	_screen_shake()
 	if current_health == 0:
 		player_died.emit()
+
+func _screen_shake() -> void:
+	if _camera == null:
+		_camera = get_node_or_null("Camera2D")
+	if _camera == null:
+		return
+	var tween = create_tween()
+	for i in range(4):
+		var offset = Vector2(randf_range(-4, 4), randf_range(-4, 4))
+		tween.tween_property(_camera, "offset", offset, 0.04)
+	tween.tween_property(_camera, "offset", Vector2.ZERO, 0.04)
 
 func heal(amount: int) -> void:
 	current_health = min(current_health + amount, max_health)

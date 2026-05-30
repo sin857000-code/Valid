@@ -12,20 +12,32 @@ extends CanvasLayer
 @onready var level_up_popup: CanvasLayer = $LevelUpPopup
 
 var _player: Node = null
+var _combo_label: Label = null
 
 func _ready() -> void:
 	GameManager.level_up.connect(_on_level_up)
 	_refresh_exp()
+	_combo_label = Label.new()
+	_combo_label.add_theme_font_size_override("font_size", 18)
+	_combo_label.modulate = Color(1.0, 0.8, 0.2, 0.0)
+	_combo_label.position = Vector2(8, 130)
+	add_child(_combo_label)
 
 func _process(_delta: float) -> void:
 	if _player == null:
 		_player = get_tree().get_first_node_in_group("player")
 		return
-	# 대시 쿨다운 표시
 	var cd = _player._dash_cooldown_timer
 	var ratio = 1.0 - clamp(cd / _player.DASH_COOLDOWN, 0.0, 1.0)
 	dash_bar.value = ratio * 100.0
 	dash_bar.modulate = Color(0.4, 0.9, 1.0) if ratio >= 1.0 else Color(0.6, 0.6, 0.6)
+	# combo display
+	var combo = _player._combo
+	if combo >= 2:
+		_combo_label.text = "x%d COMBO" % combo
+		_combo_label.modulate.a = min(1.0, _combo_label.modulate.a + 0.15)
+	else:
+		_combo_label.modulate.a = max(0.0, _combo_label.modulate.a - 0.05)
 
 func update_health(current: int, maximum: int) -> void:
 	health_bar.max_value = maximum
