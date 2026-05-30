@@ -117,6 +117,18 @@ const ENEMY_SCRIPTS = [
 	"res://scripts/enemies/enemy_lightning_elemental.gd",
 	"res://scripts/enemies/enemy_dire_wolf.gd",
 	"res://scripts/enemies/enemy_phantom_wolf.gd",
+	"res://scripts/enemies/enemy_iron_golem.gd",
+	"res://scripts/enemies/enemy_acid_slime.gd",
+	"res://scripts/enemies/enemy_plague_zombie.gd",
+	"res://scripts/enemies/enemy_wight.gd",
+	"res://scripts/enemies/enemy_revenant_knight.gd",
+	"res://scripts/enemies/enemy_death_specter.gd",
+	"res://scripts/enemies/enemy_lava_spawn.gd",
+	"res://scripts/enemies/enemy_cursed_mummy.gd",
+	"res://scripts/enemies/enemy_plague_beast.gd",
+	"res://scripts/enemies/enemy_shadow_stalker.gd",
+	"res://scripts/enemies/enemy_fire_colossus.gd",
+	"res://scripts/enemies/enemy_void_horror.gd",
 ]
 const ITEM_SCRIPTS = [
 	"res://scripts/items/item_health_potion.gd",
