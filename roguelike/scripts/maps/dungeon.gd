@@ -18,6 +18,7 @@ const ITEM_SCRIPTS = [
 	"res://scripts/items/item_speed_up.gd",
 	"res://scripts/items/item_invincible.gd",
 	"res://scripts/items/item_rage.gd",
+	"res://scripts/items/item_regen.gd",
 ]
 const WEAPON_SCRIPTS = [
 	"res://scripts/items/weapon_dagger.gd",
@@ -119,6 +120,13 @@ func _make_enemy(script: GDScript) -> CharacterBody2D:
 	enemy.set_script(script)
 	return enemy
 
+func _spawn_clear_burst() -> void:
+	if player == null:
+		return
+	var hp = load("res://scripts/ui/hit_particle.gd")
+	for i in range(3):
+		hp.spawn(entities, player.global_position, Color(randf(), randf_range(0.7, 1.0), randf_range(0.2, 0.6)))
+
 func register_enemy(enemy: Node) -> void:
 	entities.add_child(enemy)
 	enemy.enemy_died.connect(_on_enemy_died)
@@ -168,6 +176,7 @@ func _on_enemy_died(enemy: Node) -> void:
 		_make_item(load(ITEM_SCRIPTS[randi() % ITEM_SCRIPTS.size()]), drop_pos)
 	enemy_count -= 1
 	if enemy_count <= 0:
+		_spawn_clear_burst()
 		if player and player.damage_free_time > 5.0:
 			var bonus = 50 * GameManager.current_floor
 			GameManager.add_score(bonus)

@@ -76,6 +76,13 @@ func _physics_process(delta: float) -> void:
 		return
 
 	damage_free_time += delta
+	if has_meta("regen_rate") and current_health < max_health:
+		var regen_acc = get_meta("regen_acc") if has_meta("regen_acc") else 0.0
+		regen_acc += delta * get_meta("regen_rate")
+		if regen_acc >= 1.0:
+			heal(int(regen_acc))
+			regen_acc = fmod(regen_acc, 1.0)
+		set_meta("regen_acc", regen_acc)
 	_physics_process_invincible(delta)
 	status.tick(delta, self)
 	var direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
@@ -117,6 +124,14 @@ func _do_attack() -> void:
 	_attack_timer = attack_cooldown
 	_visual.flash_attack()
 	load("res://scripts/core/sound_manager.gd").play_attack(self)
+	# Auto-aim: snap facing toward nearest enemy within 1.5x attack range
+	var best_dist = attack_range * 1.5
+	for body in get_tree().get_nodes_in_group("enemy"):
+		var d = global_position.distance_to(body.global_position)
+		if d < best_dist:
+			best_dist = d
+			facing = (body.global_position - global_position).normalized()
+			_visual.update_facing(facing)
 	var arc_mode = has_meta("attack_arc") and get_meta("attack_arc")
 	var attack_pos = global_position + facing * attack_range
 	var hit_any = false
