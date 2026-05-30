@@ -28,10 +28,16 @@ func _physics_process(delta: float) -> void:
 func _explode() -> void:
 	_dying = true
 	set_physics_process(false)
-	# 폭발 파티클
 	var hp = load("res://scripts/ui/hit_particle.gd")
 	for i in range(3):
 		hp.spawn(get_parent(), global_position + Vector2(randi_range(-10,10), randi_range(-10,10)), Color(1.0, 0.4, 0.0))
 	_player.take_damage(25)
+	_spawn_poison_cloud()
 	enemy_died.emit(self)
 	queue_free()
+
+func _spawn_poison_cloud() -> void:
+	var cloud = Area2D.new()
+	cloud.set_script(load("res://scripts/maps/poison_cloud.gd"))
+	get_parent().add_child(cloud)
+	cloud.global_position = global_position
