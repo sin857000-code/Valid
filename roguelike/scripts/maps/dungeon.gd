@@ -11,6 +11,8 @@ const ENEMY_SCRIPTS = [
 	"res://scripts/enemies/enemy_armored.gd",
 	"res://scripts/enemies/enemy_ice.gd",
 	"res://scripts/enemies/enemy_teleporter.gd",
+	"res://scripts/enemies/enemy_mirror.gd",
+	"res://scripts/enemies/enemy_healer.gd",
 ]
 const ITEM_SCRIPTS = [
 	"res://scripts/items/item_health_potion.gd",
@@ -24,6 +26,8 @@ const ITEM_SCRIPTS = [
 	"res://scripts/items/item_teleport.gd",
 	"res://scripts/items/item_exp_boost.gd",
 	"res://scripts/items/item_berserker.gd",
+	"res://scripts/items/item_iron_boots.gd",
+	"res://scripts/items/item_double_exp.gd",
 ]
 const WEAPON_SCRIPTS = [
 	"res://scripts/items/weapon_dagger.gd",
@@ -34,6 +38,8 @@ const WEAPON_SCRIPTS = [
 	"res://scripts/items/weapon_wand.gd",
 	"res://scripts/items/weapon_freeze.gd",
 	"res://scripts/items/weapon_lightning.gd",
+	"res://scripts/items/weapon_cannon.gd",
+	"res://scripts/items/weapon_axe.gd",
 ]
 const TILE = 16
 const BASE_ENEMIES = 5
@@ -115,6 +121,8 @@ func _generate_floor() -> void:
 	_spawn_traps()
 	_spawn_secret_loot()
 	_spawn_chests()
+	if GameManager.current_floor >= 16:
+		_spawn_lava_tiles()
 	transition.fade_out()
 
 func _spawn_enemy() -> void:
@@ -214,6 +222,15 @@ func _spawn_traps() -> void:
 		trap.set_script(load("res://scripts/maps/trap_tile.gd"))
 		entities.add_child(trap)
 		trap.global_position = Vector2(room.get_center()) * TILE + Vector2(randi_range(-24, 24), randi_range(-24, 24))
+
+func _spawn_lava_tiles() -> void:
+	var count = 4 + (GameManager.current_floor - 16) / 2
+	for i in range(count):
+		var room = rooms[randi_range(1, rooms.size() - 2)]
+		var lava = Area2D.new()
+		lava.set_script(load("res://scripts/maps/lava_tile.gd"))
+		entities.add_child(lava)
+		lava.global_position = Vector2(room.get_center()) * TILE + Vector2(randi_range(-24, 24), randi_range(-24, 24))
 
 func _make_item(script: GDScript, pos: Vector2) -> void:
 	var item = Area2D.new()

@@ -234,6 +234,8 @@ func take_damage(amount: int) -> void:
 			get_meta("shield_visual").queue_free()
 		return
 	damage_free_time = 0.0
+	if has_meta("damage_reduction"):
+		amount = max(1, int(amount * (1.0 - get_meta("damage_reduction"))))
 	current_health -= amount
 	current_health = max(current_health, 0)
 	health_changed.emit(current_health, max_health)

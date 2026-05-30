@@ -30,9 +30,13 @@ func next_floor() -> void:
 	floor_cleared.emit()
 
 func add_score(amount: int) -> void:
+	var player = get_tree().get_first_node_in_group("player") if get_tree() else null
+	var mult = 1.0
+	if player and player.has_meta("exp_mult"):
+		mult = player.get_meta("exp_mult")
 	score += amount
 	kills += 1
-	add_exp(amount)
+	add_exp(int(amount * mult))
 
 func save() -> void:
 	var data = {

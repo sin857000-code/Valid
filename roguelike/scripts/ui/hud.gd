@@ -45,6 +45,11 @@ func _ready() -> void:
 	_combo_label.position = Vector2(8, 130)
 	add_child(_combo_label)
 
+	_enemy_label = Label.new()
+	_enemy_label.add_theme_font_size_override("font_size", 11)
+	_enemy_label.position = Vector2(8, 168)
+	add_child(_enemy_label)
+
 	# Boss HP bar (bottom center, hidden by default)
 	_boss_bar_bg = ColorRect.new()
 	_boss_bar_bg.color = Color(0.15, 0.05, 0.15)
@@ -115,6 +120,12 @@ func _process(_delta: float) -> void:
 	else:
 		_combo_label.modulate.a = max(0.0, _combo_label.modulate.a - 0.05)
 
+	# enemy counter
+	var enemy_count = get_tree().get_nodes_in_group("enemy").size()
+	if _enemy_label != null:
+		_enemy_label.text = "Enemies: %d" % enemy_count
+		_enemy_label.modulate = Color(1.0, 0.5, 0.5) if enemy_count > 0 else Color(0.5, 1.0, 0.5)
+
 func update_health(current: int, maximum: int) -> void:
 	health_bar.max_value = maximum
 	health_bar.value = current
@@ -128,6 +139,7 @@ var _best_floor: int = 1
 var _status_label: Label = null
 var _bomb_bar: ProgressBar = null
 var _vignette: ColorRect = null
+var _enemy_label: Label = null
 
 func update_floor(floor_num: int) -> void:
 	var theme_name = "Cave"
