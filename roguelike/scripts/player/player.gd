@@ -265,6 +265,13 @@ func _physics_process_invincible(delta: float) -> void:
 				remove_meta("power_surge_base")
 		else:
 			set_meta("power_surge_timer", pt)
+	if has_meta("auto_shield_timer") and not (has_meta("shield") and get_meta("shield")):
+		var ast = get_meta("auto_shield_timer") + delta
+		var interval = get_meta("auto_shield_interval") if has_meta("auto_shield_interval") else 15.0
+		if ast >= interval:
+			set_meta("shield", true)
+			ast = 0.0
+		set_meta("auto_shield_timer", ast)
 
 func take_damage(amount: int) -> void:
 	if _is_dashing:

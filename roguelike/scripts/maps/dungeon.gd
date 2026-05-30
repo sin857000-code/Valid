@@ -20,6 +20,9 @@ const ENEMY_SCRIPTS = [
 	"res://scripts/enemies/enemy_regenerator.gd",
 	"res://scripts/enemies/enemy_charger.gd",
 	"res://scripts/enemies/enemy_ninja.gd",
+	"res://scripts/enemies/enemy_vampire_bat.gd",
+	"res://scripts/enemies/enemy_golem.gd",
+	"res://scripts/enemies/enemy_ghost.gd",
 ]
 const ITEM_SCRIPTS = [
 	"res://scripts/items/item_health_potion.gd",
@@ -46,6 +49,7 @@ const ITEM_SCRIPTS = [
 	"res://scripts/items/item_power_surge.gd",
 	"res://scripts/items/item_adrenaline.gd",
 	"res://scripts/items/item_dash_attack.gd",
+	"res://scripts/items/item_barrier.gd",
 ]
 const WEAPON_SCRIPTS = [
 	"res://scripts/items/weapon_dagger.gd",
