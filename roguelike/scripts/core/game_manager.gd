@@ -1,0 +1,66 @@
+extends Node
+
+signal player_died
+signal floor_cleared
+signal level_up(new_level: int)
+
+var current_floor: int = 1
+var score: int = 0
+var exp: int = 0
+var level: int = 1
+
+func exp_to_next() -> int:
+	return level * 50
+
+func add_exp(amount: int) -> void:
+	exp += amount
+	while exp >= exp_to_next():
+		exp -= exp_to_next()
+		level += 1
+		level_up.emit(level)
+
+func next_floor() -> void:
+	current_floor += 1
+	floor_cleared.emit()
+
+func add_score(amount: int) -> void:
+	score += amount
+	add_exp(amount)
+
+func save() -> void:
+	var data = {
+		"floor": current_floor,
+		"score": score,
+		"exp": exp,
+		"level": level,
+	}
+	var file = FileAccess.open("user://save.json", FileAccess.WRITE)
+	file.store_string(JSON.stringify(data))
+	file.close()
+
+func load_save() -> bool:
+	if not FileAccess.file_exists("user://save.json"):
+		return false
+	var file = FileAccess.open("user://save.json", FileAccess.READ)
+	var result = JSON.parse_string(file.get_as_text())
+	file.close()
+	if result == null:
+		return false
+	current_floor = result.get("floor", 1)
+	score = result.get("score", 0)
+	exp = result.get("exp", 0)
+	level = result.get("level", 1)
+	return true
+
+func has_save() -> bool:
+	return FileAccess.file_exists("user://save.json")
+
+func delete_save() -> void:
+	if FileAccess.file_exists("user://save.json"):
+		DirAccess.remove_absolute("user://save.json")
+
+func reset() -> void:
+	current_floor = 1
+	score = 0
+	exp = 0
+	level = 1
