@@ -77,6 +77,10 @@ func _physics_process(delta: float) -> void:
 			modulate.a = 1.0
 		velocity = facing * DASH_SPEED
 		move_and_slide()
+		if has_meta("dash_attack") and get_meta("dash_attack"):
+			for body in get_tree().get_nodes_in_group("enemy"):
+				if global_position.distance_to(body.global_position) < 16.0:
+					body.take_damage(int(attack_damage * 0.5), global_position)
 		return
 
 	damage_free_time += delta
