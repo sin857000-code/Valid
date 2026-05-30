@@ -1,17 +1,17 @@
 {
-  "timestamp": "2026-05-30T18:21:49+00:00",
+  "timestamp": "2026-05-30T18:22:36+00:00",
   "build": {
     "success": 1,
     "script_errors": 1
   },
   "metrics": {
-    "total_lines": 3664,
-    "script_count": 85,
+    "total_lines": 3758,
+    "script_count": 88,
     "scene_count": 6,
     "todo_count": 0,
-    "enemy_types": 18,
+    "enemy_types": 20,
     "weapon_count": 15,
-    "item_count": 23
+    "item_count": 24
   },
   "features": {
     "fog_of_war": 1,
@@ -24,5 +24,5 @@
     "floor_transition": 1
   },
   "missing": [""],
-  "score": 454
+  "score": 475
 }

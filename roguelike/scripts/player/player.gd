@@ -164,7 +164,11 @@ func _do_attack() -> void:
 			var crit_chance = 0.12 + (get_meta("crit_bonus") if has_meta("crit_bonus") else 0.0)
 			var is_crit = randf() < crit_chance
 			var rage_mult = get_meta("rage_dmg_mult") if has_meta("rage_dmg_mult") else 1.0
-			var dmg = int(attack_damage * (3 if is_crit else 1) * rage_mult)
+			var adrenaline_mult = 1.0
+			if has_meta("adrenaline") and get_meta("adrenaline"):
+				var hp_ratio = float(current_health) / float(max_health)
+				adrenaline_mult = 1.0 + (1.0 - hp_ratio) * 1.5
+			var dmg = int(attack_damage * (3 if is_crit else 1) * rage_mult * adrenaline_mult)
 			_combo += 1
 			_combo_timer = 2.5
 			var combo_mult = 1.0 + (_combo / 10.0)
