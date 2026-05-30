@@ -43,6 +43,11 @@ const ENEMY_SCRIPTS = [
 	"res://scripts/enemies/enemy_revenant.gd",
 	"res://scripts/enemies/enemy_crystal.gd",
 	"res://scripts/enemies/enemy_void_walker.gd",
+	"res://scripts/enemies/enemy_bloodhound.gd",
+	"res://scripts/enemies/enemy_gargoyle.gd",
+	"res://scripts/enemies/enemy_trickster.gd",
+	"res://scripts/enemies/enemy_angel.gd",
+	"res://scripts/enemies/enemy_cursed_archer.gd",
 ]
 const ITEM_SCRIPTS = [
 	"res://scripts/items/item_health_potion.gd",
