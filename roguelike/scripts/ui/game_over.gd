@@ -11,7 +11,9 @@ func _ready() -> void:
 	hs.save_score(GameManager.score, GameManager.current_floor, GameManager.level)
 
 	score_label.text = "Score: %d  |  Kills: %d" % [GameManager.score, GameManager.kills]
-	level_label.text = "Level %d  |  Floor %d" % [GameManager.level, GameManager.current_floor]
+	var best_t = GameManager.best_floor_time
+	var time_str = ("Best floor time: %.1fs" % best_t) if best_t < 9999.0 else ""
+	level_label.text = "Level %d  |  Floor %d  %s" % [GameManager.level, GameManager.current_floor, time_str]
 	var scores = hs.get_scores()
 	if scores.size() > 0:
 		best_label.text = "Best: %d" % scores[0].get("score", 0)

@@ -50,3 +50,14 @@ func flash_attack() -> void:
 	_body.color = Color.YELLOW
 	_tween = create_tween()
 	_tween.tween_property(_body, "color", COLOR_BODY, 0.1)
+
+func show_attack_range(range_px: float) -> void:
+	var ring = ColorRect.new()
+	ring.size = Vector2(range_px * 2, range_px * 2)
+	ring.position = Vector2(-range_px, -range_px)
+	ring.color = Color(1.0, 1.0, 0.3, 0.18)
+	add_child(ring)
+	var t = ring.create_tween().set_parallel(true)
+	t.tween_property(ring, "scale", Vector2(1.3, 1.3), 0.2)
+	t.tween_property(ring, "modulate:a", 0.0, 0.2)
+	t.tween_callback(ring.queue_free).set_delay(0.2)

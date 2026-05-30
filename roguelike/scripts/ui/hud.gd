@@ -26,6 +26,12 @@ func _ready() -> void:
 	_status_label.position = Vector2(8, 148)
 	add_child(_status_label)
 
+	_vignette = ColorRect.new()
+	_vignette.color = Color(0.6, 0.0, 0.0, 0.0)
+	_vignette.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_vignette.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_vignette)
+
 	_bomb_bar = ProgressBar.new()
 	_bomb_bar.custom_minimum_size = Vector2(0, 7)
 	_bomb_bar.max_value = 100.0
@@ -114,10 +120,14 @@ func update_health(current: int, maximum: int) -> void:
 	health_bar.value = current
 	var ratio = float(current) / float(maximum)
 	health_bar.modulate = Color(1.0, ratio * 0.85, ratio * 0.2)
+	if _vignette:
+		var danger = clamp(1.0 - ratio * 2.5, 0.0, 0.55)
+		_vignette.color = Color(0.6, 0.0, 0.0, danger)
 
 var _best_floor: int = 1
 var _status_label: Label = null
 var _bomb_bar: ProgressBar = null
+var _vignette: ColorRect = null
 
 func update_floor(floor_num: int) -> void:
 	var theme_name = "Cave"

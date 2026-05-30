@@ -132,6 +132,7 @@ func _spawn_dash_trail() -> void:
 func _do_attack() -> void:
 	_attack_timer = attack_cooldown
 	_visual.flash_attack()
+	_visual.show_attack_range(attack_range)
 	load("res://scripts/core/sound_manager.gd").play_attack(self)
 	# Auto-aim: snap facing toward nearest enemy within 1.5x attack range
 	var best_dist = attack_range * 1.5
