@@ -94,6 +94,8 @@ func _generate_floor() -> void:
 	else:
 		for i in range(BASE_ENEMIES + GameManager.current_floor - 1):
 			_spawn_enemy()
+		if GameManager.current_floor % 5 == 0 and not is_boss_floor:
+			_spawn_elite()
 
 	_spawn_items()
 	_spawn_traps()
@@ -107,6 +109,20 @@ func _spawn_enemy() -> void:
 	enemy.global_position = Vector2(room.get_center()) * TILE
 	enemy.enemy_died.connect(_on_enemy_died)
 	enemy_count += 1
+
+func _spawn_elite() -> void:
+	var room = rooms[randi_range(1, rooms.size() - 2)]
+	var elite = _make_enemy(load(ENEMY_SCRIPTS[randi_range(1, ENEMY_SCRIPTS.size() - 1)]))
+	entities.add_child(elite)
+	elite.max_health = int(elite.max_health * 3.0)
+	elite.current_health = elite.max_health
+	elite.attack_damage = int(elite.attack_damage * 1.5)
+	elite.exp_reward = int(elite.exp_reward * 3)
+	elite.modulate = Color(1.0, 0.6, 0.0)  # golden tint
+	elite.global_position = Vector2(room.get_center()) * TILE
+	elite.enemy_died.connect(_on_enemy_died)
+	enemy_count += 1
+	hud.show_weapon_pickup("⚡ ELITE ENEMY!")
 
 func _spawn_boss() -> void:
 	var boss = _make_enemy(load("res://scripts/enemies/enemy_boss.gd"))

@@ -191,7 +191,27 @@ func take_damage(amount: int) -> void:
 	hp.spawn(get_parent(), global_position, Color(1, 0.3, 0.3))
 	_screen_shake()
 	if current_health == 0:
-		player_died.emit()
+		_play_death_anim()
+
+func _play_death_anim() -> void:
+	set_physics_process(false)
+	load("res://scripts/core/sound_manager.gd").play_hit(self)
+	for i in range(3):
+		var ring = ColorRect.new()
+		ring.size = Vector2(16, 16)
+		ring.position = Vector2(-8, -8)
+		ring.color = Color(1.0, 0.3, 0.2, 0.8)
+		get_parent().add_child(ring)
+		ring.global_position = global_position - Vector2(8, 8)
+		var t = ring.create_tween().set_parallel(true)
+		t.tween_property(ring, "scale", Vector2(3.0, 3.0), 0.4).set_delay(i * 0.12)
+		t.tween_property(ring, "modulate:a", 0.0, 0.4).set_delay(i * 0.12)
+		t.tween_callback(ring.queue_free).set_delay(0.52 + i * 0.12)
+	var hp = load("res://scripts/ui/hit_particle.gd")
+	hp.spawn(get_parent(), global_position, Color(1.0, 0.2, 0.2))
+	var tween = create_tween()
+	tween.tween_property(self, "scale", Vector2.ZERO, 0.3).set_delay(0.2)
+	tween.tween_callback(func(): player_died.emit())
 
 func _screen_shake() -> void:
 	if _camera == null:

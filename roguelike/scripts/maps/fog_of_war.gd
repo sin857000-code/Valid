@@ -7,10 +7,11 @@ const TILE = 16
 const VISION_RADIUS = 7   # 타일 단위
 const SOFT_EDGE = 2.5
 
-var _revealed: Dictionary = {}  # Vector2i → bool (한번이라도 본 곳)
+var _revealed: Dictionary = {}
 var _player: Node = null
 var _map_w: int = 0
 var _map_h: int = 0
+var _reveal_all_timer: float = 0.0
 
 func setup(w: int, h: int) -> void:
 	_map_w = w
@@ -18,10 +19,14 @@ func setup(w: int, h: int) -> void:
 	_revealed.clear()
 	queue_redraw()
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if _player == null:
 		_player = get_tree().get_first_node_in_group("player")
 		return
+	if Input.is_action_just_pressed("ui_focus_next"):
+		_reveal_all_timer = 3.0
+	if _reveal_all_timer > 0.0:
+		_reveal_all_timer -= delta
 	_reveal_around(_player.global_position)
 	queue_redraw()
 
@@ -48,10 +53,12 @@ func _draw() -> void:
 			var dist = Vector2(dx, dy).length()
 			var alpha: float
 			if dist > VISION_RADIUS:
-				if _revealed.has(tile):
-					alpha = 0.72  # 본 적 있는 곳: 어둡게
+				if _reveal_all_timer > 0.0:
+					alpha = 0.0  # temporary full reveal
+				elif _revealed.has(tile):
+					alpha = 0.72
 				else:
-					alpha = 1.0   # 못 본 곳: 완전 어둠
+					alpha = 1.0
 			else:
 				# 시야 안: 가장자리 소프트
 				var t = clamp((dist - (VISION_RADIUS - SOFT_EDGE)) / SOFT_EDGE, 0.0, 1.0)
