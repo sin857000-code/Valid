@@ -170,6 +170,9 @@ func _do_attack() -> void:
 			if has_meta("freeze_on_hit") and get_meta("freeze_on_hit"):
 				if body.has_method("get") and body.get("status") != null:
 					body.status.apply_slow(0.2, 1.8)
+			if has_meta("stun_on_hit") and get_meta("stun_on_hit"):
+				if body.has_method("get") and body.get("_stun_timer") != null:
+					body._stun_timer = 0.5
 			if has_meta("lifesteal"):
 				var steal = int(dmg * get_meta("lifesteal"))
 				if steal > 0:
@@ -241,6 +244,12 @@ func take_damage(amount: int) -> void:
 			get_meta("shield_visual").queue_free()
 		return
 	damage_free_time = 0.0
+	if has_meta("thorns_dmg"):
+		var thorns = get_meta("thorns_dmg")
+		for body in get_tree().get_nodes_in_group("enemy"):
+			if global_position.distance_to(body.global_position) < 40.0:
+				body.take_damage(thorns, global_position)
+				break
 	if has_meta("damage_reduction"):
 		amount = max(1, int(amount * (1.0 - get_meta("damage_reduction"))))
 	current_health -= amount

@@ -19,6 +19,7 @@ var _visual: Node2D
 var _dying: bool = false
 var _wander_dir: Vector2 = Vector2.RIGHT
 var _wander_timer: float = 0.0
+var _stun_timer: float = 0.0
 
 func _ready() -> void:
 	add_to_group("enemy")
@@ -36,6 +37,10 @@ func _ready() -> void:
 	add_child(col)
 
 func _physics_process(delta: float) -> void:
+	if _stun_timer > 0.0:
+		_stun_timer -= delta
+		velocity = Vector2.ZERO
+		return
 	if _dying or _player == null:
 		if _player == null:
 			_player = get_tree().get_first_node_in_group("player")
