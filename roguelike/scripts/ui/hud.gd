@@ -21,6 +21,11 @@ var _boss: Node = null
 func _ready() -> void:
 	GameManager.level_up.connect(_on_level_up)
 	_refresh_exp()
+	_status_label = Label.new()
+	_status_label.add_theme_font_size_override("font_size", 13)
+	_status_label.position = Vector2(8, 148)
+	add_child(_status_label)
+
 	_combo_label = Label.new()
 	_combo_label.add_theme_font_size_override("font_size", 18)
 	_combo_label.modulate = Color(1.0, 0.8, 0.2, 0.0)
@@ -69,6 +74,20 @@ func _process(_delta: float) -> void:
 		_boss_bar_bg.visible = false
 		_boss = null
 
+	# status effects
+	if _player.has_method("get") and _player.get("status") != null:
+		var effects = []
+		if _player.status.is_active("poison"):
+			effects.append("[☠ POISON]")
+		if _player.status.is_active("slow"):
+			effects.append("[❄ SLOW]")
+		if _player.has_meta("rage_timer") and _player.get_meta("rage_timer") > 0:
+			effects.append("[🔥 RAGE]")
+		if _player.has_meta("invincible_timer") and _player.get_meta("invincible_timer") > 0:
+			effects.append("[★ INVUL]")
+		_status_label.text = "  ".join(effects)
+		_status_label.modulate = Color(1.0, 0.7, 0.3) if effects.size() > 0 else Color.WHITE
+
 	# combo display
 	var combo = _player._combo
 	if combo >= 2:
@@ -84,6 +103,7 @@ func update_health(current: int, maximum: int) -> void:
 	health_bar.modulate = Color(1.0, ratio * 0.85, ratio * 0.2)
 
 var _best_floor: int = 1
+var _status_label: Label = null
 
 func update_floor(floor_num: int) -> void:
 	var theme_name = "Cave"
