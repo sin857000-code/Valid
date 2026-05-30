@@ -143,11 +143,14 @@ func _do_attack() -> void:
 			facing = (body.global_position - global_position).normalized()
 			_visual.update_facing(facing)
 	var arc_mode = has_meta("attack_arc") and get_meta("attack_arc")
+	var multi_mode = has_meta("multishot") and get_meta("multishot")
 	var attack_pos = global_position + facing * attack_range
 	var hit_any = false
 	for body in get_tree().get_nodes_in_group("enemy"):
-		var in_range = arc_mode and body.global_position.distance_to(global_position) < attack_range * 1.3
-		in_range = in_range or body.global_position.distance_to(attack_pos) < attack_range
+		var body_dir = body.global_position - global_position
+		var in_arc = arc_mode and body.global_position.distance_to(global_position) < attack_range * 1.3
+		var in_cone = multi_mode and body_dir.length() < attack_range * 1.2 and body_dir.normalized().dot(facing) > 0.5
+		var in_range = in_arc or in_cone or body.global_position.distance_to(attack_pos) < attack_range
 		if in_range:
 			var is_crit = randf() < 0.12
 			var rage_mult = get_meta("rage_dmg_mult") if has_meta("rage_dmg_mult") else 1.0

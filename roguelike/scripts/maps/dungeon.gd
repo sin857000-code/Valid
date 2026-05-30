@@ -27,6 +27,7 @@ const WEAPON_SCRIPTS = [
 	"res://scripts/items/weapon_sword.gd",
 	"res://scripts/items/weapon_staff.gd",
 	"res://scripts/items/weapon_boomerang.gd",
+	"res://scripts/items/weapon_shotgun.gd",
 ]
 const TILE = 16
 const BASE_ENEMIES = 5
@@ -93,6 +94,8 @@ func _generate_floor() -> void:
 	elif f == 16:
 		hud.show_theme_enter("Hell", Color(1.0, 0.3, 0.1))
 
+	_floor_entry_zoom()
+
 	if is_boss_floor:
 		_spawn_boss()
 		hud.show_boss_alert()
@@ -146,6 +149,14 @@ func _make_enemy(script: GDScript) -> CharacterBody2D:
 	var enemy = CharacterBody2D.new()
 	enemy.set_script(script)
 	return enemy
+
+func _floor_entry_zoom() -> void:
+	if camera == null:
+		return
+	var target_zoom = Vector2(2.5, 2.5)
+	camera.zoom = Vector2(4.0, 4.0)
+	var tween = camera.create_tween()
+	tween.tween_property(camera, "zoom", target_zoom, 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 func _spawn_clear_burst() -> void:
 	if player == null:

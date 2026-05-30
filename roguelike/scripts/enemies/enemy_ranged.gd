@@ -39,8 +39,11 @@ func _physics_process(delta: float) -> void:
 		_fire_projectile()
 
 func _fire_projectile() -> void:
-	var proj = Node2D.new()
-	proj.set_script(load("res://scripts/enemies/projectile.gd"))
-	get_parent().add_child(proj)
-	proj.global_position = global_position
-	proj.setup(_player.global_position - global_position, 8, 150.0)
+	var burst = 3 if GameManager.current_floor >= 8 else 1
+	for i in range(burst):
+		var proj = Node2D.new()
+		proj.set_script(load("res://scripts/enemies/projectile.gd"))
+		get_parent().add_child(proj)
+		proj.global_position = global_position
+		var spread = Vector2(randf_range(-0.15, 0.15), randf_range(-0.15, 0.15))
+		proj.setup(_player.global_position - global_position + spread * 80, 8, 150.0)
