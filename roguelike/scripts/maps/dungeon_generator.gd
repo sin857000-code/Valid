@@ -77,3 +77,10 @@ func _carve_corridor(from: Vector2i, to: Vector2i) -> void:
 
 func get_random_room_center() -> Vector2i:
 	return rooms[randi() % rooms.size()].get_center()
+
+func get_boss_room_center() -> Vector2i:
+	# 가장 마지막 방을 보스 방으로 사용
+	return rooms[rooms.size() - 1].get_center()
+
+func get_boss_room() -> Rect2i:
+	return rooms[rooms.size() - 1]
