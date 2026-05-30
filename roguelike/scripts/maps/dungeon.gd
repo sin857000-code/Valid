@@ -129,6 +129,18 @@ const ENEMY_SCRIPTS = [
 	"res://scripts/enemies/enemy_shadow_stalker.gd",
 	"res://scripts/enemies/enemy_fire_colossus.gd",
 	"res://scripts/enemies/enemy_void_horror.gd",
+	"res://scripts/enemies/enemy_flesh_golem.gd",
+	"res://scripts/enemies/enemy_cursed_spirit.gd",
+	"res://scripts/enemies/enemy_forest_troll.gd",
+	"res://scripts/enemies/enemy_sea_serpent.gd",
+	"res://scripts/enemies/enemy_lava_giant.gd",
+	"res://scripts/enemies/enemy_cursed_tree.gd",
+	"res://scripts/enemies/enemy_iron_spider.gd",
+	"res://scripts/enemies/enemy_venom_serpent.gd",
+	"res://scripts/enemies/enemy_dark_shaman.gd",
+	"res://scripts/enemies/enemy_ancient_golem.gd",
+	"res://scripts/enemies/enemy_nightmare.gd",
+	"res://scripts/enemies/enemy_storm_crow.gd",
 ]
 const ITEM_SCRIPTS = [
 	"res://scripts/items/item_health_potion.gd",
