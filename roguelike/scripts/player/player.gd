@@ -1,8 +1,7 @@
 extends CharacterBody2D
 
-signal health_changed(current: int, max: int)
+signal health_changed(current: int, max_hp: int)
 signal player_died
-signal item_collected(item_name: String)
 
 const SPEED = 150.0
 
@@ -15,14 +14,34 @@ var current_health: int
 var _attack_timer: float = 0.0
 var facing: Vector2 = Vector2.RIGHT
 
+# 레벨업 보너스 누적
+var _level_hp_bonus: int = 0
+var _level_dmg_bonus: int = 0
+
 func _ready() -> void:
+	add_to_group("player")
+	# 레벨에 따라 스탯 적용
+	_apply_level_stats(GameManager.level)
 	current_health = max_health
 	health_changed.emit(current_health, max_health)
-	add_to_group("player")
+	GameManager.level_up.connect(_on_level_up)
+
+func _apply_level_stats(lv: int) -> void:
+	_level_hp_bonus = (lv - 1) * 20
+	_level_dmg_bonus = (lv - 1) * 3
+	max_health = 100 + _level_hp_bonus
+	attack_damage = 10 + _level_dmg_bonus
+
+func _on_level_up(new_level: int) -> void:
+	var old_max = max_health
+	_apply_level_stats(new_level)
+	# 최대 체력 증가분만큼 현재 체력도 회복
+	current_health += max_health - old_max
+	current_health = min(current_health, max_health)
+	health_changed.emit(current_health, max_health)
 
 func _physics_process(delta: float) -> void:
 	_attack_timer -= delta
-
 	var direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	velocity = direction * SPEED
 	if direction != Vector2.ZERO:

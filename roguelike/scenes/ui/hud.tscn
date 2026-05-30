@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://hud"]
+[gd_scene load_steps=4 format=3 uid="uid://hud"]
 
 [ext_resource type="Script" path="res://scripts/ui/hud.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/ui/minimap.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/ui/level_up_popup.gd" id="3"]
 
 [node name="HUD" type="CanvasLayer" groups=["hud"]]
 script = ExtResource("1")
@@ -10,22 +11,38 @@ script = ExtResource("1")
 offset_left = 10.0
 offset_top = 10.0
 offset_right = 210.0
-offset_bottom = 30.0
+offset_bottom = 28.0
 max_value = 100.0
 value = 100.0
 
+[node name="ExpBar" type="ProgressBar" parent="."]
+offset_left = 10.0
+offset_top = 32.0
+offset_right = 210.0
+offset_bottom = 46.0
+max_value = 50.0
+value = 0.0
+modulate = Color(0.3, 0.8, 1, 1)
+
+[node name="LevelLabel" type="Label" parent="."]
+offset_left = 10.0
+offset_top = 50.0
+offset_right = 120.0
+offset_bottom = 68.0
+text = "Lv.1"
+
 [node name="FloorLabel" type="Label" parent="."]
 offset_left = 10.0
-offset_top = 38.0
+offset_top = 70.0
 offset_right = 300.0
-offset_bottom = 58.0
+offset_bottom = 88.0
 text = "Floor: 1"
 
 [node name="ScoreLabel" type="Label" parent="."]
 offset_left = 10.0
-offset_top = 62.0
+offset_top = 92.0
 offset_right = 200.0
-offset_bottom = 82.0
+offset_bottom = 110.0
 text = "Score: 0"
 
 [node name="BossAlert" type="Label" parent="."]
@@ -33,17 +50,17 @@ visible = false
 offset_left = 440.0
 offset_top = 300.0
 offset_right = 840.0
-offset_bottom = 360.0
-text = "⚠ BOSS FLOOR ⚠"
+offset_bottom = 340.0
+text = "!! BOSS FLOOR !!"
 horizontal_alignment = 1
 modulate = Color(1, 0.2, 0.2, 1)
 
 [node name="WeaponLabel" type="Label" parent="."]
 visible = false
 offset_left = 440.0
-offset_top = 360.0
+offset_top = 348.0
 offset_right = 840.0
-offset_bottom = 390.0
+offset_bottom = 372.0
 text = "장착: "
 horizontal_alignment = 1
 modulate = Color(0.4, 0.9, 1, 1)
@@ -54,3 +71,23 @@ offset_left = 1030.0
 offset_top = 10.0
 offset_right = 1270.0
 offset_bottom = 200.0
+
+[node name="LevelUpPopup" type="CanvasLayer" parent="."]
+script = ExtResource("3")
+visible = false
+
+[node name="Panel" type="Panel" parent="LevelUpPopup"]
+offset_left = 490.0
+offset_top = 200.0
+offset_right = 790.0
+offset_bottom = 260.0
+
+[node name="Label" type="Label" parent="LevelUpPopup/Panel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 300.0
+offset_bottom = 60.0
+text = "LEVEL UP!"
+horizontal_alignment = 1
+vertical_alignment = 1
+modulate = Color(1, 0.9, 0.2, 1)

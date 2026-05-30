@@ -115,6 +115,7 @@ func _on_enemy_died(enemy: Node) -> void:
 	enemy_count -= 1
 	if enemy_count <= 0:
 		GameManager.next_floor()
+		GameManager.save()  # 층 클리어마다 자동 저장
 		hud.update_floor(GameManager.current_floor)
 		_generate_floor()
 
