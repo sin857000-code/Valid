@@ -245,6 +245,7 @@ var camera: Camera2D
 var rooms: Array[Rect2i] = []
 var enemy_count: int = 0
 var is_boss_floor: bool = false
+var _wall_body: StaticBody2D = null
 
 func _ready() -> void:
 	add_to_group("dungeon")
@@ -284,6 +285,7 @@ func _generate_floor() -> void:
 	rooms = generator.rooms
 	map_renderer.setup(grid, generator.get_map_width(), generator.get_map_height())
 	fog.setup(generator.get_map_width(), generator.get_map_height())
+	_build_wall_colliders(grid, generator.get_map_width(), generator.get_map_height())
 
 	is_boss_floor = GameManager.current_floor % BOSS_INTERVAL == 0
 	player.global_position = Vector2(rooms[0].get_center()) * TILE
@@ -376,6 +378,21 @@ func _spawn_clear_burst() -> void:
 	var hp = load("res://scripts/ui/hit_particle.gd")
 	for i in range(3):
 		hp.spawn(entities, player.global_position, Color(randf(), randf_range(0.7, 1.0), randf_range(0.2, 0.6)))
+
+func _build_wall_colliders(grid: Array, w: int, h: int) -> void:
+	if _wall_body != null:
+		_wall_body.queue_free()
+	_wall_body = StaticBody2D.new()
+	add_child(_wall_body)
+	for y in range(h):
+		for x in range(w):
+			if grid[y][x] != 1:
+				var shape = RectangleShape2D.new()
+				shape.size = Vector2(TILE, TILE)
+				var col = CollisionShape2D.new()
+				col.shape = shape
+				col.position = Vector2(x * TILE + TILE / 2.0, y * TILE + TILE / 2.0)
+				_wall_body.add_child(col)
 
 func register_enemy(enemy: Node) -> void:
 	entities.add_child(enemy)

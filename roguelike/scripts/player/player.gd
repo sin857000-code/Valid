@@ -237,10 +237,10 @@ func _do_chain_lightning() -> void:
 func _fire_player_projectile() -> void:
 	var proj = Node2D.new()
 	proj.set_script(load("res://scripts/enemies/projectile.gd"))
+	proj.set_meta("player_proj", true)
 	get_parent().add_child(proj)
 	proj.global_position = global_position
 	proj.setup(facing, attack_damage, 180.0)
-	proj.set_meta("player_proj", true)
 	proj.set_meta("dmg_override", attack_damage)
 
 func _physics_process_invincible(delta: float) -> void:
