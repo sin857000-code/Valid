@@ -93,6 +93,18 @@ const ENEMY_SCRIPTS = [
 	"res://scripts/enemies/enemy_undead_knight.gd",
 	"res://scripts/enemies/enemy_naga.gd",
 	"res://scripts/enemies/enemy_wendigo.gd",
+	"res://scripts/enemies/enemy_lich_king.gd",
+	"res://scripts/enemies/enemy_death_reaper.gd",
+	"res://scripts/enemies/enemy_earth_giant.gd",
+	"res://scripts/enemies/enemy_crystal_golem.gd",
+	"res://scripts/enemies/enemy_abomination.gd",
+	"res://scripts/enemies/enemy_phantom_king.gd",
+	"res://scripts/enemies/enemy_scorpion.gd",
+	"res://scripts/enemies/enemy_giant_bat.gd",
+	"res://scripts/enemies/enemy_mud_golem.gd",
+	"res://scripts/enemies/enemy_fire_demon.gd",
+	"res://scripts/enemies/enemy_ice_witch.gd",
+	"res://scripts/enemies/enemy_thunder_wolf.gd",
 ]
 const ITEM_SCRIPTS = [
 	"res://scripts/items/item_health_potion.gd",
