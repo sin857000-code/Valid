@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-30T18:42:54+00:00",
+  "timestamp": "2026-05-30T18:43:55+00:00",
   "build": {
     "success": 1,
     "script_errors": 1
   },
   "metrics": {
-    "total_lines": 6184,
-    "script_count": 173,
+    "total_lines": 6352,
+    "script_count": 185,
     "scene_count": 6,
     "todo_count": 0,
-    "enemy_types": 82,
+    "enemy_types": 94,
     "weapon_count": 27,
     "item_count": 34
   },
@@ -24,5 +24,5 @@
     "floor_transition": 1
   },
   "missing": [""],
-  "score": 1081
+  "score": 1177
 }

@@ -81,6 +81,18 @@ const ENEMY_SCRIPTS = [
 	"res://scripts/enemies/enemy_zombie.gd",
 	"res://scripts/enemies/enemy_cerberus.gd",
 	"res://scripts/enemies/enemy_leech.gd",
+	"res://scripts/enemies/enemy_imp.gd",
+	"res://scripts/enemies/enemy_troll.gd",
+	"res://scripts/enemies/enemy_harpy.gd",
+	"res://scripts/enemies/enemy_basilisk.gd",
+	"res://scripts/enemies/enemy_doppelganger.gd",
+	"res://scripts/enemies/enemy_bone_dragon.gd",
+	"res://scripts/enemies/enemy_shadow_wolf.gd",
+	"res://scripts/enemies/enemy_crystal_spider.gd",
+	"res://scripts/enemies/enemy_flame_imp.gd",
+	"res://scripts/enemies/enemy_undead_knight.gd",
+	"res://scripts/enemies/enemy_naga.gd",
+	"res://scripts/enemies/enemy_wendigo.gd",
 ]
 const ITEM_SCRIPTS = [
 	"res://scripts/items/item_health_potion.gd",
