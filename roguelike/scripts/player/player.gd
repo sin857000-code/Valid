@@ -80,6 +80,12 @@ func _physics_process(delta: float) -> void:
 		return
 
 	damage_free_time += delta
+	if has_meta("vampire_aura") and get_meta("vampire_aura") and current_health < max_health:
+		for body in get_tree().get_nodes_in_group("enemy"):
+			if global_position.distance_to(body.global_position) < 50.0:
+				var drain = 1
+				heal(drain)
+				break
 	if has_meta("regen_rate") and current_health < max_health:
 		var regen_acc = get_meta("regen_acc") if has_meta("regen_acc") else 0.0
 		regen_acc += delta * get_meta("regen_rate")
@@ -148,7 +154,8 @@ func _do_attack() -> void:
 	var hit_any = false
 	for body in get_tree().get_nodes_in_group("enemy"):
 		var body_dir = body.global_position - global_position
-		var in_arc = arc_mode and body.global_position.distance_to(global_position) < attack_range * 1.3
+		var scythe = has_meta("scythe_mode") and get_meta("scythe_mode")
+		var in_arc = arc_mode and body.global_position.distance_to(global_position) < (attack_range * 1.8 if scythe else attack_range * 1.3)
 		var in_cone = multi_mode and body_dir.length() < attack_range * 1.2 and body_dir.normalized().dot(facing) > 0.5
 		var in_range = in_arc or in_cone or body.global_position.distance_to(attack_pos) < attack_range
 		if in_range:
@@ -245,6 +252,15 @@ func take_damage(amount: int) -> void:
 	hp.spawn(get_parent(), global_position, Color(1, 0.3, 0.3))
 	_screen_shake()
 	if current_health == 0:
+		if has_meta("second_chance") and get_meta("second_chance"):
+			remove_meta("second_chance")
+			current_health = int(max_health * 0.3)
+			health_changed.emit(current_health, max_health)
+			_visual.flash_hit()
+			var hud = get_tree().get_first_node_in_group("hud")
+			if hud:
+				hud.show_weapon_pickup("부활!")
+			return
 		_play_death_anim()
 
 func _play_death_anim() -> void:

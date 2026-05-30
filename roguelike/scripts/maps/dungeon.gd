@@ -30,6 +30,8 @@ const ITEM_SCRIPTS = [
 	"res://scripts/items/item_iron_boots.gd",
 	"res://scripts/items/item_double_exp.gd",
 	"res://scripts/items/item_magnet.gd",
+	"res://scripts/items/item_second_chance.gd",
+	"res://scripts/items/item_vampire.gd",
 ]
 const WEAPON_SCRIPTS = [
 	"res://scripts/items/weapon_dagger.gd",
@@ -42,6 +44,7 @@ const WEAPON_SCRIPTS = [
 	"res://scripts/items/weapon_lightning.gd",
 	"res://scripts/items/weapon_cannon.gd",
 	"res://scripts/items/weapon_axe.gd",
+	"res://scripts/items/weapon_scythe.gd",
 ]
 const TILE = 16
 const BASE_ENEMIES = 5
