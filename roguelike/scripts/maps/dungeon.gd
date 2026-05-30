@@ -71,6 +71,16 @@ const ENEMY_SCRIPTS = [
 	"res://scripts/enemies/enemy_dark_elf.gd",
 	"res://scripts/enemies/enemy_storm_giant.gd",
 	"res://scripts/enemies/enemy_cursed_slime.gd",
+	"res://scripts/enemies/enemy_spider_queen.gd",
+	"res://scripts/enemies/enemy_frost_knight.gd",
+	"res://scripts/enemies/enemy_vulture.gd",
+	"res://scripts/enemies/enemy_sandworm.gd",
+	"res://scripts/enemies/enemy_storm_elemental.gd",
+	"res://scripts/enemies/enemy_skeleton_mage.gd",
+	"res://scripts/enemies/enemy_demon.gd",
+	"res://scripts/enemies/enemy_zombie.gd",
+	"res://scripts/enemies/enemy_cerberus.gd",
+	"res://scripts/enemies/enemy_leech.gd",
 ]
 const ITEM_SCRIPTS = [
 	"res://scripts/items/item_health_potion.gd",
