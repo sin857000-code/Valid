@@ -9,6 +9,7 @@ const ENEMY_SCRIPTS = [
 	"res://scripts/enemies/enemy_poison.gd",
 	"res://scripts/enemies/enemy_swarm.gd",
 	"res://scripts/enemies/enemy_armored.gd",
+	"res://scripts/enemies/enemy_ice.gd",
 ]
 const ITEM_SCRIPTS = [
 	"res://scripts/items/item_health_potion.gd",

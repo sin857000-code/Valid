@@ -83,6 +83,8 @@ func update_health(current: int, maximum: int) -> void:
 	var ratio = float(current) / float(maximum)
 	health_bar.modulate = Color(1.0, ratio * 0.85, ratio * 0.2)
 
+var _best_floor: int = 1
+
 func update_floor(floor_num: int) -> void:
 	var theme_name = "Cave"
 	if floor_num >= 16:
@@ -91,7 +93,9 @@ func update_floor(floor_num: int) -> void:
 		theme_name = "Crypt"
 	elif floor_num >= 6:
 		theme_name = "Dungeon"
-	floor_label.text = "F%d  %s" % [floor_num, theme_name]
+	_best_floor = max(_best_floor, floor_num)
+	var suffix = (" (Best: %d)" % _best_floor) if _best_floor > floor_num else ""
+	floor_label.text = "F%d  %s%s" % [floor_num, theme_name, suffix]
 
 func update_score(s: int) -> void:
 	score_label.text = "Score  %d" % s
