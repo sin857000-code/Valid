@@ -105,6 +105,18 @@ const ENEMY_SCRIPTS = [
 	"res://scripts/enemies/enemy_fire_demon.gd",
 	"res://scripts/enemies/enemy_ice_witch.gd",
 	"res://scripts/enemies/enemy_thunder_wolf.gd",
+	"res://scripts/enemies/enemy_magma_lord.gd",
+	"res://scripts/enemies/enemy_frost_wyrm.gd",
+	"res://scripts/enemies/enemy_wind_spirit.gd",
+	"res://scripts/enemies/enemy_bone_archer.gd",
+	"res://scripts/enemies/enemy_void_beast.gd",
+	"res://scripts/enemies/enemy_plague_bearer.gd",
+	"res://scripts/enemies/enemy_arcane_golem.gd",
+	"res://scripts/enemies/enemy_blood_knight.gd",
+	"res://scripts/enemies/enemy_cave_troll.gd",
+	"res://scripts/enemies/enemy_lightning_elemental.gd",
+	"res://scripts/enemies/enemy_dire_wolf.gd",
+	"res://scripts/enemies/enemy_phantom_wolf.gd",
 ]
 const ITEM_SCRIPTS = [
 	"res://scripts/items/item_health_potion.gd",
