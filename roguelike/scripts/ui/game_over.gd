@@ -10,9 +10,19 @@ func _ready() -> void:
 	var hs = load("res://scripts/core/high_score.gd")
 	hs.save_score(GameManager.score, GameManager.current_floor, GameManager.level)
 
-	score_label.text = "Score: %d" % GameManager.score
+	score_label.text = "Score: %d  |  Kills: %d" % [GameManager.score, GameManager.kills]
 	level_label.text = "Level %d  |  Floor %d" % [GameManager.level, GameManager.current_floor]
-	best_label.text = "Best: %d" % hs.get_best_score()
+	var scores = hs.get_scores()
+	if scores.size() > 0:
+		best_label.text = "Best: %d" % scores[0].get("score", 0)
+		for i in range(min(3, scores.size())):
+			var s = scores[i]
+			var lbl = Label.new()
+			lbl.text = "#%d  %d pts  Lv%d  F%d" % [i+1, s.get("score",0), s.get("level",1), s.get("floor",1)]
+			lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			lbl.modulate = Color(1.0, 0.85, 0.2) if i == 0 else Color(0.8, 0.8, 0.8)
+			$VBoxContainer.add_child(lbl)
+			$VBoxContainer.move_child(lbl, $VBoxContainer.get_child_count() - 3)
 
 	GameManager.delete_save()
 	retry_button.pressed.connect(_on_retry)

@@ -31,3 +31,6 @@ static func get_best_score() -> int:
 	if scores.is_empty():
 		return 0
 	return scores[0]["score"]
+
+static func get_scores() -> Array:
+	return load_scores()

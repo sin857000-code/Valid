@@ -8,6 +8,7 @@ var current_floor: int = 1
 var score: int = 0
 var exp: int = 0
 var level: int = 1
+var kills: int = 0
 
 func exp_to_next() -> int:
 	return level * 50
@@ -25,6 +26,7 @@ func next_floor() -> void:
 
 func add_score(amount: int) -> void:
 	score += amount
+	kills += 1
 	add_exp(amount)
 
 func save() -> void:
@@ -64,3 +66,4 @@ func reset() -> void:
 	score = 0
 	exp = 0
 	level = 1
+	kills = 0
