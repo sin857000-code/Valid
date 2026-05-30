@@ -1,9 +1,12 @@
 extends "res://scripts/enemies/enemy_base.gd"
 
 const PHASE2_THRESHOLD = 0.5
+const PHASE3_THRESHOLD = 0.25
 
 var _phase2_activated: bool = false
+var _phase3_activated: bool = false
 var _summon_timer: float = 5.0
+var _spin_timer: float = 3.0
 
 func _ready() -> void:
 	max_health = 200 + GameManager.current_floor * 50
@@ -24,11 +27,18 @@ func _physics_process(delta: float) -> void:
 		return
 	if not _phase2_activated and current_health <= max_health * PHASE2_THRESHOLD:
 		_activate_phase2()
+	if not _phase3_activated and current_health <= max_health * PHASE3_THRESHOLD:
+		_activate_phase3()
 	if _phase2_activated:
 		_summon_timer -= delta
 		if _summon_timer <= 0.0:
 			_summon_timer = 5.0
 			_summon_minion()
+	if _phase3_activated:
+		_spin_timer -= delta
+		if _spin_timer <= 0.0:
+			_spin_timer = 2.5
+			_fire_radial_burst()
 
 func _activate_phase2() -> void:
 	_phase2_activated = true
@@ -57,6 +67,30 @@ func _spawn_phase2_ring() -> void:
 	pulse.tween_property(ring, "modulate:a", 0.1, 0.4)
 	pulse.tween_property(ring, "scale", Vector2(1.3, 1.3), 0.4)
 	pulse.tween_property(ring, "scale", Vector2(1.0, 1.0), 0.4)
+
+func _activate_phase3() -> void:
+	_phase3_activated = true
+	move_speed = 110.0
+	attack_damage = 45
+	body_color = Color(1.0, 0.0, 0.0)
+	if _visual:
+		_visual._base_color = body_color
+		_visual._body.color = body_color
+	modulate = Color(3.0, 0.3, 0.3)
+	var t = create_tween()
+	t.tween_property(self, "modulate", Color.WHITE, 0.5)
+
+func _fire_radial_burst() -> void:
+	if _player == null:
+		return
+	for i in range(8):
+		var angle = i * TAU / 8.0
+		var dir = Vector2(cos(angle), sin(angle))
+		var proj = Node2D.new()
+		proj.set_script(load("res://scripts/enemies/projectile.gd"))
+		get_parent().add_child(proj)
+		proj.global_position = global_position
+		proj.setup(dir, attack_damage / 2, 140.0)
 
 func _summon_minion() -> void:
 	var minion = CharacterBody2D.new()

@@ -23,6 +23,7 @@ const ITEM_SCRIPTS = [
 	"res://scripts/items/item_lifesteal.gd",
 	"res://scripts/items/item_teleport.gd",
 	"res://scripts/items/item_exp_boost.gd",
+	"res://scripts/items/item_berserker.gd",
 ]
 const WEAPON_SCRIPTS = [
 	"res://scripts/items/weapon_dagger.gd",
@@ -32,6 +33,7 @@ const WEAPON_SCRIPTS = [
 	"res://scripts/items/weapon_shotgun.gd",
 	"res://scripts/items/weapon_wand.gd",
 	"res://scripts/items/weapon_freeze.gd",
+	"res://scripts/items/weapon_lightning.gd",
 ]
 const TILE = 16
 const BASE_ENEMIES = 5

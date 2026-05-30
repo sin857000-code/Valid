@@ -175,6 +175,27 @@ func _do_attack() -> void:
 		_combo = 0
 	if has_meta("bouncing_shots") and get_meta("bouncing_shots"):
 		_fire_player_projectile()
+	if has_meta("chain_lightning") and get_meta("chain_lightning") and hit_any:
+		_do_chain_lightning()
+
+func _do_chain_lightning() -> void:
+	var targets = []
+	for body in get_tree().get_nodes_in_group("enemy"):
+		targets.append(body)
+	targets.sort_custom(func(a, b): return global_position.distance_to(a.global_position) < global_position.distance_to(b.global_position))
+	var chain_count = min(3, targets.size())
+	for i in range(chain_count):
+		var t = targets[i]
+		var bolt_dmg = int(attack_damage * 0.5)
+		t.take_damage(bolt_dmg, global_position)
+		var bolt = ColorRect.new()
+		bolt.size = Vector2(4, 4)
+		bolt.color = Color(1.0, 1.0, 0.3, 0.9)
+		bolt.global_position = t.global_position - Vector2(2, 2)
+		get_parent().add_child(bolt)
+		var bt = bolt.create_tween()
+		bt.tween_property(bolt, "modulate:a", 0.0, 0.2).set_delay(i * 0.05)
+		bt.tween_callback(bolt.queue_free)
 
 func _fire_player_projectile() -> void:
 	var proj = Node2D.new()
