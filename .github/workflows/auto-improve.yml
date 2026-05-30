@@ -1,0 +1,60 @@
+name: Auto Improve & Deploy
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # 6시간마다
+  workflow_dispatch:        # 수동 트리거 가능
+
+jobs:
+  test-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Godot 4.2
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.2.0
+          use-dotnet: false
+          include-templates: true
+
+      - name: Run quality test
+        run: |
+          chmod +x roguelike/dev/test.sh
+          cd roguelike
+          GODOT_BIN=godot bash dev/test.sh
+          cat dev/report.json
+
+      - name: Build WebGL
+        run: |
+          mkdir -p roguelike/build/web
+          cd roguelike
+          godot --headless --export-release "Web" build/web/index.html 2>&1 | tail -5
+
+      - name: Deploy to GitHub Pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin gh-pages
+
+          SCORE=$(python3 -c "import json; d=json.load(open('roguelike/dev/report.json')); print(d['score'])" 2>/dev/null || echo "?")
+
+          git checkout gh-pages
+          cp roguelike/build/web/index.html .
+          cp roguelike/build/web/index.js .
+          cp roguelike/build/web/index.pck .
+          cp roguelike/build/web/index.wasm .
+          cp roguelike/build/web/index.worker.js .
+          cp roguelike/build/web/index.audio.worklet.js .
+
+          grep -q "coi-serviceworker" index.html || \
+            sed -i 's|<meta name="viewport"|<script src="coi-serviceworker.js"></script>\n\t\t<meta name="viewport"|' index.html
+
+          git add index.*
+          git diff --cached --quiet || git commit -m "Auto deploy - score: $SCORE [skip ci]"
+          git push origin gh-pages
