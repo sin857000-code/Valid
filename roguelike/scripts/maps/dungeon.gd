@@ -141,6 +141,18 @@ const ENEMY_SCRIPTS = [
 	"res://scripts/enemies/enemy_ancient_golem.gd",
 	"res://scripts/enemies/enemy_nightmare.gd",
 	"res://scripts/enemies/enemy_storm_crow.gd",
+	"res://scripts/enemies/enemy_death_knight2.gd",
+	"res://scripts/enemies/enemy_chaos_imp.gd",
+	"res://scripts/enemies/enemy_elder_dragon.gd",
+	"res://scripts/enemies/enemy_feral_beast.gd",
+	"res://scripts/enemies/enemy_crystal_wisp.gd",
+	"res://scripts/enemies/enemy_poison_toad.gd",
+	"res://scripts/enemies/enemy_spectral_archer.gd",
+	"res://scripts/enemies/enemy_hellfire_imp.gd",
+	"res://scripts/enemies/enemy_thunder_giant.gd",
+	"res://scripts/enemies/enemy_swamp_creature.gd",
+	"res://scripts/enemies/enemy_chaos_knight.gd",
+	"res://scripts/enemies/enemy_elder_lich.gd",
 ]
 const ITEM_SCRIPTS = [
 	"res://scripts/items/item_health_potion.gd",
