@@ -34,8 +34,6 @@ body {
 	box-shadow: 0 0 1px 1px #2f2d35;
 }
 
-/* Status display */
-
 #status {
 	position: absolute;
 	left: 0;
@@ -45,7 +43,6 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	/* don't consume click events - make children visible explicitly */
 	visibility: hidden;
 }
 
@@ -107,12 +104,10 @@ body {
 	line-height: 1.3;
 	visibility: visible;
 	padding: 4px 6px;
-	visibility: visible;
 }
 		</style>
 		<link id='-gd-engine-icon' rel='icon' type='image/png' href='index.icon.png' />
-<link rel='apple-touch-icon' href='index.apple-touch-icon.png'/>
-
+		<link rel='apple-touch-icon' href='index.apple-touch-icon.png'/>
 	</head>
 	<body>
 		<canvas id="canvas">
@@ -138,7 +133,7 @@ body {
 
 		<script src="index.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":79152,"index.wasm":35410474},"focusCanvas":true,"gdextensionLibs":[]};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":273504,"index.wasm":35410474},"focusCanvas":true,"gdextensionLibs":[]};
 const engine = new Engine(GODOT_CONFIG);
 
 (function () {
@@ -228,7 +223,6 @@ const engine = new Engine(GODOT_CONFIG);
 					statusProgressInner.style.width = `${(current / total) * 100}%`;
 					setStatusMode('progress');
 					if (current === total) {
-						// wait for progress bar animation
 						setTimeout(() => {
 							setStatusMode('indeterminate');
 						}, 500);
@@ -246,4 +240,3 @@ const engine = new Engine(GODOT_CONFIG);
 		</script>
 	</body>
 </html>
-
