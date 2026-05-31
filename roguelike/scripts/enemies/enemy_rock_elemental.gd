@@ -1,7 +1,5 @@
 extends "res://scripts/enemies/enemy_base.gd"
 
-const ARMOR_REDUCTION = 0.35
-
 func _ready() -> void:
 	max_health = 90
 	attack_damage = 35
@@ -14,5 +12,5 @@ func _ready() -> void:
 	body_size = 18
 	super._ready()
 
-func take_damage(amount: float, knockback_dir: Vector2 = Vector2.ZERO) -> void:
-	super.take_damage(amount * (1.0 - ARMOR_REDUCTION), knockback_dir * 0.3)
+func take_damage(amount, knockback_dir = Vector2.ZERO) -> void:
+	super.take_damage(int(amount * 0.65), knockback_dir * 0.3)

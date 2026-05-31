@@ -1,7 +1,6 @@
 extends "res://scripts/enemies/enemy_base.gd"
 
 var _fire_trail_timer = 0.0
-var _damage_mult = 0.5
 
 func _ready() -> void:
 	max_health = 80
@@ -15,8 +14,8 @@ func _ready() -> void:
 	body_size = 16
 	super._ready()
 
-func take_damage(amount: float, knockback_dir: Vector2 = Vector2.ZERO) -> void:
-	super.take_damage(amount * _damage_mult, knockback_dir)
+func take_damage(amount, knockback_dir = Vector2.ZERO) -> void:
+	super.take_damage(int(amount * 0.5), knockback_dir)
 
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
@@ -55,5 +54,4 @@ func _fire_tile_tick(marker: Node2D) -> void:
 	if _player == null:
 		return
 	if marker.global_position.distance_to(_player.global_position) < 14.0:
-		if _player.has_method("take_damage"):
-			_player.take_damage(4.0, Vector2.ZERO)
+		_player.take_damage(4)

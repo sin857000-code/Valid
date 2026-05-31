@@ -16,7 +16,7 @@ func _ready() -> void:
 
 func take_damage(amount, knockback_dir = Vector2.ZERO) -> void:
 	super.take_damage(amount, knockback_dir)
-	if not _phase2 and _health < max_health * 0.5:
+	if not _phase2 and current_health < max_health * 0.5:
 		_phase2 = true
 		move_speed = 130.0
 		attack_damage = 30
